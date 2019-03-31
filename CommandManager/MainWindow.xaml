@@ -9,13 +9,29 @@
         Title="CommandManager" Height="600" Width="800">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" Background="#FFF0F0F0">
-            <CheckBox DockPanel.Dock="Right" Content="Show Hints" Margin="0 2 5 0" IsChecked="True"></CheckBox>
+            <CheckBox DockPanel.Dock="Right" Content="Show Hints" Margin="0 2 5 0" IsChecked="{Binding Path=ShowHints}" ></CheckBox>
             <Menu Background="Transparent">
                 <MenuItem x:Name="MI_Import" Header="Import" Click="MI_Import_Click"></MenuItem>
                 <MenuItem x:Name="MI_Export" Header="Export" Click="MI_Export_Click"></MenuItem>
             </Menu>
         </DockPanel>
-        <Button x:Name="Btn_AddCmd" Content="Add" Click="Btn_AddCmd_Click" DockPanel.Dock="Bottom" Style="{StaticResource btn-dark}" MinWidth="100"></Button>
+        <Grid x:Name="Grid_Hints" DockPanel.Dock="Top" Visibility="{Binding Path=HintVisibility}" Background="WhiteSmoke">
+            <StackPanel Margin="5" >
+                <Border Style="{StaticResource border-alert-primary}">
+                    <DockPanel HorizontalAlignment="Center">
+                        <Image Source="info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
+                        <TextBlock  Style="{StaticResource textbox-alert-primary}" Text="You can double click commands to edit them!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                    </DockPanel>
+                </Border>
+                <Border Style="{StaticResource border-alert-primary}">
+                    <DockPanel HorizontalAlignment="Center">
+                        <Image Source="info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
+                        <TextBlock Style="{StaticResource textbox-alert-primary}" Text="You can right click commands to delete them!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+        <Button x:Name="Btn_AddCmd" Content="Add" Click="Btn_AddCmd_Click" DockPanel.Dock="Bottom" Style="{StaticResource btn-secondary}" MinWidth="100"></Button>
         <ListBox x:Name="LB_Commands" HorizontalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True"
                  ScrollViewer.VerticalScrollBarVisibility="Visible" MouseDoubleClick="LB_Commands_MouseDoubleClick">
             <ListBox.ItemTemplate>
@@ -28,11 +44,11 @@
                             </StackPanel>
                         </GroupBox.Header>
                         <DockPanel>
-                            <Button Content="Execute" DockPanel.Dock="Right" VerticalAlignment="Bottom" Style="{StaticResource btn-primary}" Click="Btn_Execute_Click" Tag="{Binding Path=ID}"></Button>
-                            <Button Content="Delete" DockPanel.Dock="Right" VerticalAlignment="Bottom" Style="{StaticResource btn-outline-danger}" Click="Btn_Remove_Click" Tag="{Binding Path=ID}"></Button>
-                            <Button Content="Edit" DockPanel.Dock="Right" VerticalAlignment="Bottom" Style="{StaticResource btn-outline-dark}" Click="Btn_Edit_Click" Tag="{Binding Path=ID}"></Button>
-                            <Button Content="Up" DockPanel.Dock="Right" VerticalAlignment="Bottom" Style="{StaticResource btn-outline-dark}" Click="Btn_Up_Click" Tag="{Binding Path=ID}"></Button>
-                            <Button Content="Down" DockPanel.Dock="Right" VerticalAlignment="Bottom" Style="{StaticResource btn-outline-dark}" Click="Btn_Down_Click" Tag="{Binding Path=ID}"></Button>
+                            <Button Content="Execute" DockPanel.Dock="Right" VerticalAlignment="Top" Style="{StaticResource btn-primary}" Click="Btn_Execute_Click" Tag="{Binding Path=ID}"></Button>
+                            <Button Content="Delete" DockPanel.Dock="Right" VerticalAlignment="Top" Style="{StaticResource btn-outline-danger}" Click="Btn_Remove_Click" Tag="{Binding Path=ID}"></Button>
+                            <Button Content="Edit" DockPanel.Dock="Right" VerticalAlignment="Top" Style="{StaticResource btn-outline-warning}" Click="Btn_Edit_Click" Tag="{Binding Path=ID}"></Button>
+                            <Button Content="Up" DockPanel.Dock="Right" VerticalAlignment="Top" Style="{StaticResource btn-outline-dark}" Click="Btn_Up_Click" Tag="{Binding Path=ID}"></Button>
+                            <Button Content="Down" DockPanel.Dock="Right" VerticalAlignment="Top" Style="{StaticResource btn-outline-dark}" Click="Btn_Down_Click" Tag="{Binding Path=ID}"></Button>
                             <TextBlock Text="{Binding Path=Script}" FontFamily="Consolas" Foreground="Gray" Grid.ColumnSpan="2" Grid.Row="1"></TextBlock>
                         </DockPanel>
                     </GroupBox>

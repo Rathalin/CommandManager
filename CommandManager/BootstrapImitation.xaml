@@ -5,20 +5,52 @@
 
     <Color x:Key="primary" R="0" G="123" B="255" A="255"></Color>
     <Color x:Key="primary-dark" R="0" G="105" B="217" A="255"></Color>
+    <Color x:Key="alert-primary-background" R="204" G="229" B="255" A="255"></Color>
+    <Color x:Key="alert-primary-border" R="184" G="218" B="255" A="255"></Color>
+    <Color x:Key="alert-primary-font" R="0" G="64" B="133" A="255"></Color>
+    
     <Color x:Key="secondary" R="108" G="117" B="125" A="255"></Color>
     <Color x:Key="secondary-dark" R="90" G="98" B="104" A="255"></Color>
+    <Color x:Key="alert-secondary-background" R="226" G="227" B="229" A="255"></Color>
+    <Color x:Key="alert-secondary-border" R="214" G="216" B="219" A="255"></Color>
+    <Color x:Key="alert-secondary-font" R="56" G="61" B="55" A="255"></Color>
+
     <Color x:Key="success" R="40" G="167" B="69" A="255"></Color>
     <Color x:Key="success-dark" R="33" G="136" B="56" A="255"></Color>
+    <Color x:Key="alert-success-background" R="212" G="237" B="218" A="255"></Color>
+    <Color x:Key="alert-success-border" R="195" G="230" B="203" A="255"></Color>
+    <Color x:Key="alert-success-font" R="21" G="87" B="36" A="255"></Color>
+
     <Color x:Key="info" R="91" G="192" B="222" A="255"></Color>
     <Color x:Key="info-dark" R="80" G="164" B="189" A="255"></Color>
+    <Color x:Key="alert-info-background" R="209" G="236" B="241" A="255"></Color>
+    <Color x:Key="alert-info-border" R="190" G="229" B="235" A="255"></Color>
+    <Color x:Key="alert-info-font" R="12" G="84" B="96" A="255"></Color>
+    
     <Color x:Key="warning" R="240" G="173" B="78" A="255"></Color>
     <Color x:Key="warning-dark" R="224" G="168" B="0" A="255"></Color>
+    <Color x:Key="alert-warning-background" R="255" G="243" B="205" A="255"></Color>
+    <Color x:Key="alert-warning-border" R="255" G="238" B="186" A="255"></Color>
+    <Color x:Key="alert-warning-font" R="133" G="100" B="4" A="255"></Color>
+    
     <Color x:Key="danger" R="220" G="53" B="69" A="255"></Color>
     <Color x:Key="danger-dark" R="200" G="35" B="51" A="255"></Color>
+    <Color x:Key="alert-danger-background" R="248" G="215" B="218" A="255"></Color>
+    <Color x:Key="alert-danger-border" R="245" G="198" B="203" A="255"></Color>
+    <Color x:Key="alert-danger-font" R="114" G="28" B="36" A="255"></Color>
+    
     <Color x:Key="dark" R="45" G="50" B="55" A="255"></Color>
     <Color x:Key="dark-dark" R="35" G="39" B="43" A="255"></Color>
+    <Color x:Key="alert-dark-background" R="214" G="216" B="217" A="255"></Color>
+    <Color x:Key="alert-dark-border" R="198" G="200" B="202" A="255"></Color>
+    <Color x:Key="alert-dark-font" R="27" G="30" B="33" A="255"></Color>
+    
     <Color x:Key="light" R="247" G="247" B="247" A="255"></Color>
     <Color x:Key="light-dark" R="226" G="230" B="234" A="255"></Color>
+    <Color x:Key="alert-light-background" R="254" G="254" B="254" A="255"></Color>
+    <Color x:Key="alert-light-border" R="253" G="253" B="254" A="255"></Color>
+    <Color x:Key="alert-light-font" R="129" G="129" B="130" A="255"></Color>
+    
     <Color x:Key="font-dark" R="33" G="37" B="41" A="255"></Color>
     <Color x:Key="font-light" R="248" G="249" B="250" A="255"></Color>
 
@@ -971,6 +1003,216 @@
 
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <!-- Alerts -->
+
+    <Style x:Key="border-alert-primary" TargetType="{x:Type Border}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-primary-background}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CornerRadius" Value="3"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-primary-border}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="10,5"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Margin" Value="5,3"></Setter>
+    </Style>
+
+    <Style x:Key="textbox-alert-primary" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-primary-font}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="border-alert-secondary" TargetType="{x:Type Border}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-secondary-background}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CornerRadius" Value="3"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-secondary-border}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="10,5"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Margin" Value="5,3"></Setter>
+    </Style>
+
+    <Style x:Key="textbox-alert-secondary" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-secondary-font}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="border-alert-success" TargetType="{x:Type Border}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-success-background}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CornerRadius" Value="3"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-success-border}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="10,5"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Margin" Value="5,3"></Setter>
+    </Style>
+
+    <Style x:Key="textbox-alert-success" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-success-font}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="border-alert-info" TargetType="{x:Type Border}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-info-background}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CornerRadius" Value="3"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-info-border}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="10,5"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Margin" Value="5,3"></Setter>
+    </Style>
+
+    <Style x:Key="textbox-alert-info" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-info-font}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="border-alert-warning" TargetType="{x:Type Border}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-warning-background}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CornerRadius" Value="3"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-warning-border}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="10,5"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Margin" Value="5,3"></Setter>
+    </Style>
+
+    <Style x:Key="textbox-alert-warning" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-warning-font}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="border-alert-danger" TargetType="{x:Type Border}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-danger-background}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CornerRadius" Value="3"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-danger-border}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="10,5"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Margin" Value="5,3"></Setter>
+    </Style>
+
+    <Style x:Key="textbox-alert-danger" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-danger-font}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="border-alert-dark" TargetType="{x:Type Border}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-dark-background}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CornerRadius" Value="3"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-dark-border}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="10,5"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Margin" Value="5,3"></Setter>
+    </Style>
+
+    <Style x:Key="textbox-alert-dark" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-dark-font}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="border-alert-light" TargetType="{x:Type Border}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-light-background}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="CornerRadius" Value="3"></Setter>
+        <Setter Property="BorderThickness" Value="1"></Setter>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-light-border}"></SolidColorBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="10,5"></Setter>
+        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+        <Setter Property="Margin" Value="5,3"></Setter>
+    </Style>
+
+    <Style x:Key="textbox-alert-light" TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground">
+            <Setter.Value>
+                <SolidColorBrush Color="{StaticResource alert-light-font}"></SolidColorBrush>
             </Setter.Value>
         </Setter>
     </Style>

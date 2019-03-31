@@ -23,7 +23,7 @@ namespace CommandManager
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         // Constructors
 
@@ -43,6 +43,7 @@ namespace CommandManager
             {
                 // No Autosave created when program first started
             }
+            ShowHints = false;
         }
 
         // Variables and Attributes
@@ -54,14 +55,39 @@ namespace CommandManager
         private string pathDirectory = Directory.GetCurrentDirectory();
         private string pathFullDefault;
         private string pathFullCustom;
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private bool _showHints;
+        public bool ShowHints
+        {
+            get { return _showHints; }
+            set
+            {
+                _showHints = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowHints"));
+                if (_showHints)
+                {
+                    HintVisibility = Visibility.Visible;
+                }
+                else
+                {
+                    HintVisibility = Visibility.Collapsed;
+                }
+            }
+        }
+
+        private Visibility _hintVisibility;
+        public Visibility HintVisibility
+        {
+            get { return _hintVisibility; }
+            set
+            {
+                _hintVisibility = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("HintVisibility"));
+            }
+        }
 
         // Methodes
-
-        public void LoadTestCommands()
-        {
-            CommandList.Add(new Command("Shutdown 30", "shut down the pc after 30 seconds", "shutdown /s /t 30"));
-            CommandList.Add(new Command("Start Vagrant", "starts the virtual machine for hypermedia", "C:\r\ncd hgbdev\r\nvagrant up"));
-        }
 
         public void LoadXML(string path)
         {
@@ -176,12 +202,6 @@ namespace CommandManager
         {
             Command c = SelectCommandFromButton((Button)sender);
             ExecuteScript(c);
-        }
-
-        private void MI_ShowHints_Click(object sender, RoutedEventArgs e)
-        {
-            DialogHints dlg = new DialogHints(this);
-            dlg.Show();
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
