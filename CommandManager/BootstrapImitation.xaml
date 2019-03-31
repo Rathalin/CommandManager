@@ -21,26 +21,7 @@
     <Color x:Key="light-dark" R="226" G="230" B="234" A="255"></Color>
     <Color x:Key="font-dark" R="33" G="37" B="41" A="255"></Color>
     <Color x:Key="font-light" R="248" G="249" B="250" A="255"></Color>
-    <!--   
-    2d3237
-    <SolidColorBrush x:Key="primary" Color="#007bff"></Color>
-    <SolidColorBrush x:Key="primary-dark" Color="#0069d9"></Color>
-    <SolidColorBrush x:Key="secondary" Color="#6c757d"></Color>
-    <SolidColorBrush x:Key="secondary-dark" Color="#5a6268"></Color>
-    <SolidColorBrush x:Key="success" Color="#28a745"></Color>
-    <SolidColorBrush x:Key="success-dark" Color="#218838"></Color>
-    <SolidColorBrush x:Key="info" Color="#5bc0de"></Color>
-    <SolidColorBrush x:Key="info-dark" Color="#FF50A4BD"></Color>
-    <SolidColorBrush x:Key="warning" Color="#f0ad4e"></Color>
-    <SolidColorBrush x:Key="warning-dark" Color="#e0a800"></Color>
-    <SolidColorBrush x:Key="danger" Color="#dc3545"></Color>
-    <SolidColorBrush x:Key="danger-dark" Color="#c82333"></Color>
-    <SolidColorBrush x:Key="dark" Color="#2d3237"></Color>
-    <SolidColorBrush x:Key="dark-dark" Color="#23272b"></Color>
-    <SolidColorBrush x:Key="light" Color="#f7f7f7"></Color>
-    <SolidColorBrush x:Key="light-dark" Color="#e2e6ea"></Color>
--->
-    
+
     <!-- Normal Buttons -->
 
     <Style x:Key="btn-primary" TargetType="Button">
