@@ -1,4 +1,4 @@
-# CommandManager
+# ![CommandManagerLogo](https://github.com/Rhatalin/CommandManager/blob/master/CommandManager/Logo_CommandManager_experimental.ico) Command Manager
 Basically a GUI for Batch-Scripts
 
 ## Idea :bulb: 
