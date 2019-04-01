@@ -10,11 +10,11 @@
         <StackPanel DockPanel.Dock="Top">
             <DockPanel>
                 <Label x:Name="Label_Name" Content="Name:" DockPanel.Dock="Left"></Label>
-                <TextBox x:Name="TB_Name" VerticalAlignment="Center" TabIndex="0"></TextBox>
+                <TextBox x:Name="TB_Name" VerticalAlignment="Center" TabIndex="0" Style="{StaticResource form-control}"></TextBox>
             </DockPanel>
             <DockPanel>
                 <Label x:Name="Label_Desc" Content="Description:" DockPanel.Dock="Left"></Label>
-                <TextBox x:Name="TB_Desc" VerticalAlignment="Center" TabIndex="1"></TextBox>
+                <TextBox x:Name="TB_Desc" VerticalAlignment="Center" TabIndex="1" Style="{StaticResource form-control}"></TextBox>
             </DockPanel>
             <Label x:Name="Label_Cmd" Content="Command Script:"></Label>
         </StackPanel>
@@ -26,6 +26,6 @@
             <Button x:Name="Btn_Cancel" Style="{StaticResource btn-secondary}" Content="Cancel" Click="Btn_Cancel_Click" Grid.Column="0" TabIndex="3" Width="120"></Button>
             <Button x:Name="Btn_Save" Style="{StaticResource btn-secondary}" Content="Save" Click="Btn_Save_Click" Grid.Column="1" TabIndex="4" Width="120"></Button>
         </Grid>
-        <TextBox x:Name="TB_Command" TextWrapping="Wrap" AcceptsReturn="True" TabIndex="2" FontFamily="Consolas"></TextBox>
+        <TextBox x:Name="TB_Command" TextWrapping="Wrap" AcceptsReturn="True" TabIndex="2" FontFamily="Consolas" Style="{StaticResource form-control}"></TextBox>
     </DockPanel>
 </Window>

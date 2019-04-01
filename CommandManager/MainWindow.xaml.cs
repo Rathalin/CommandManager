@@ -137,22 +137,46 @@ namespace CommandManager
             return GetCommandById(id);
         }
 
-        // Events
-
-        private void Btn_AddCmd_Click(object sender, RoutedEventArgs e)
+        public void LB_Commands_AddNew()
         {
             DialogCommand dlg = new DialogCommand(this);
             if (dlg.ShowDialog() == true)
             {
                 CommandList.Add(dlg.Command);
+                LB_Commands.SelectedItem = dlg.Command;
             }
+        }
+
+        // Events
+
+        private void Btn_AddCmd_Click(object sender, RoutedEventArgs e)
+        {
+            LB_Commands_AddNew();
         }
 
         private void LB_Commands_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Command cmd = (Command)LB_Commands.SelectedItem;
-            DialogCommand dlg = new DialogCommand(cmd, this);
-            dlg.ShowDialog();
+            double height = 0;
+            foreach (Command c in CommandList)
+            {
+                var item = (ListBoxItem)LB_Commands.ItemContainerGenerator.ContainerFromItem(c);
+                height += item.ActualHeight;
+            }
+
+            // check if mouseevent happend over a listbox item
+            int heigthFix = 2; // somehow the height is 2 pixles to small
+            if (e.GetPosition(this).Y <= LB_Commands.TransformToAncestor(this).Transform(new Point(0, 0)).Y + height + heigthFix)
+            {
+                Command cmd = (Command)LB_Commands.SelectedItem;
+                DialogCommand dlg = new DialogCommand(cmd, this);
+                dlg.ShowDialog();
+
+            }
+            else // add item dialog
+            {
+                LB_Commands_AddNew();
+            }
+
         }
 
         private void MI_Import_Click(object sender, RoutedEventArgs e)
