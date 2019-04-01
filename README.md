@@ -15,7 +15,7 @@ and creating a shortcut in your Windows start menu.
 
 This is how the Command Manager looks for now:
 
-![demo](https://github.com/Rhatalin/CommandManager/blob/master/CommandManager/images/CommandManager_v1.PNG)
+![demo](https://github.com/Rhatalin/CommandManager/blob/master/CommandManager/images/CommandManager_v1_0.PNG)
 
 ## Contact :card_index:
 
