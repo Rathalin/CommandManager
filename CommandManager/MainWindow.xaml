@@ -17,7 +17,7 @@
                 </Menu>
             </DockPanel>
         </Border>
-        <Grid x:Name="Grid_Hints" DockPanel.Dock="Bottom" Visibility="{Binding Path=HintVisibility}" Background="WhiteSmoke">
+        <Grid x:Name="Grid_Hints" DockPanel.Dock="Bottom" Visibility="{Binding Path=HintVisibility}" >
             <StackPanel Margin="5" >
                 <Border Style="{StaticResource border-alert-success}">
                     <DockPanel HorizontalAlignment="Center">
