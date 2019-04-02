@@ -158,7 +158,6 @@ namespace CommandManager
             {
                 CommandList.Add(dlg.Command);
                 LB_Commands.SelectedItem = dlg.Command;
-                LB_Commands.UpdateLayout();
                 
             }
         }
@@ -328,16 +327,7 @@ namespace CommandManager
         {
             Button btn = (Button)sender;
             Command cmd = GetCommandById((int)btn.Tag);
-            if (cmd.ShowOutput)
-            {
-                btn.Style = FindResource("btn-outline-danger") as Style;
-                GetCommandById((int)btn.Tag).ShowOutput = false;
-            }
-            else
-            {
-                btn.Style = FindResource("btn-outline-success") as Style;
-                GetCommandById((int)btn.Tag).ShowOutput = true;
-            }
+            cmd.ShowOutput = !cmd.ShowOutput;
         }
 
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)

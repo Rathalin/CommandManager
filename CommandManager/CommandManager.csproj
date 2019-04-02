@@ -120,18 +120,7 @@
     <Resource Include="images\Twitter_Logo_100.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\Facebook_Logo_100.png" />
     <Resource Include="images\Github_Logo_100.png" />
-    <Resource Include="images\Instagram_Logo_100.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="images\Check_Black_100.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="images\Check_Black_20.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="images\Cancel_Black_20.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
