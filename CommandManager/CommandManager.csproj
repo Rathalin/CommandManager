@@ -35,7 +35,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Logo_CommandManager_experimental.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
@@ -111,19 +112,26 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="info_yellow_small.png" />
+    <Resource Include="images\CommandManager_v1.PNG" />
+    <Resource Include="images\CommandManager_v1_0.PNG" />
+    <Resource Include="images\info_black.png" />
+    <Resource Include="images\info_yellow.png" />
+    <Resource Include="images\info_yellow_small.png" />
+    <Resource Include="images\Twitter_Logo_100.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Logo_CommandManager.ico" />
+    <Resource Include="images\Facebook_Logo_100.png" />
+    <Resource Include="images\Github_Logo_100.png" />
+    <Resource Include="images\Instagram_Logo_100.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Logo_CommandManager2.ico" />
+    <Resource Include="images\Check_Black_100.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Logo_CommandManager_64.ico" />
+    <Resource Include="images\Check_Black_20.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Logo_CommandManager_experimental.ico" />
+    <Resource Include="images\Cancel_Black_20.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

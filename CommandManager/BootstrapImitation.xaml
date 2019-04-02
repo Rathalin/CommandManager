@@ -1013,7 +1013,7 @@
         </Setter>
         <Setter Property="Padding" Value="10,5"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        <Setter Property="Margin" Value="5,3"></Setter>
+        <Setter Property="Margin" Value="1"></Setter>
     </Style>
 
     <Style x:Key="textbox-alert-primary" TargetType="{x:Type TextBlock}">
@@ -1039,7 +1039,7 @@
         </Setter>
         <Setter Property="Padding" Value="10,5"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        <Setter Property="Margin" Value="5,3"></Setter>
+        <Setter Property="Margin" Value="1"></Setter>
     </Style>
 
     <Style x:Key="textbox-alert-secondary" TargetType="{x:Type TextBlock}">
@@ -1065,7 +1065,7 @@
         </Setter>
         <Setter Property="Padding" Value="10,5"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        <Setter Property="Margin" Value="5,3"></Setter>
+        <Setter Property="Margin" Value="1"></Setter>
     </Style>
 
     <Style x:Key="textbox-alert-success" TargetType="{x:Type TextBlock}">
@@ -1091,7 +1091,7 @@
         </Setter>
         <Setter Property="Padding" Value="10,5"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        <Setter Property="Margin" Value="5,3"></Setter>
+        <Setter Property="Margin" Value="1"></Setter>
     </Style>
 
     <Style x:Key="textbox-alert-info" TargetType="{x:Type TextBlock}">
@@ -1117,7 +1117,7 @@
         </Setter>
         <Setter Property="Padding" Value="10,5"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        <Setter Property="Margin" Value="5,3"></Setter>
+        <Setter Property="Margin" Value="1"></Setter>
     </Style>
 
     <Style x:Key="textbox-alert-warning" TargetType="{x:Type TextBlock}">
@@ -1143,7 +1143,7 @@
         </Setter>
         <Setter Property="Padding" Value="10,5"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        <Setter Property="Margin" Value="5,3"></Setter>
+        <Setter Property="Margin" Value="1"></Setter>
     </Style>
 
     <Style x:Key="textbox-alert-danger" TargetType="{x:Type TextBlock}">
@@ -1169,7 +1169,7 @@
         </Setter>
         <Setter Property="Padding" Value="10,5"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        <Setter Property="Margin" Value="5,3"></Setter>
+        <Setter Property="Margin" Value="1"></Setter>
     </Style>
 
     <Style x:Key="textbox-alert-dark" TargetType="{x:Type TextBlock}">
@@ -1195,7 +1195,7 @@
         </Setter>
         <Setter Property="Padding" Value="10,5"></Setter>
         <Setter Property="VerticalAlignment" Value="Center"></Setter>
-        <Setter Property="Margin" Value="5,3"></Setter>
+        <Setter Property="Margin" Value="1"></Setter>
     </Style>
 
     <Style x:Key="textbox-alert-light" TargetType="{x:Type TextBlock}">

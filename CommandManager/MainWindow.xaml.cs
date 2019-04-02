@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -31,6 +32,7 @@ namespace CommandManager
         {
             InitializeComponent();
             DataContext = this;
+            InitSocialMedia();
             CommandList = new ObservableCollection<Command>();
             LB_Commands.ItemsSource = CommandList;
             pathFullDefault = pathDirectory + "\\" + filenameDefault;
@@ -39,9 +41,13 @@ namespace CommandManager
             {
                 LoadXML(pathFullDefault);
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException ex)
             {
                 // No Autosave created when program first started
+            }
+            catch (InvalidOperationException)
+            {
+                // Error in XML file
             }
             ShowHints = false;
         }
@@ -56,6 +62,7 @@ namespace CommandManager
         private string pathFullDefault;
         private string pathFullCustom;
         public event PropertyChangedEventHandler PropertyChanged;
+        private int btnLastDoubleClickTimestamp = 0;
 
         private bool _showHints;
         public bool ShowHints
@@ -106,16 +113,23 @@ namespace CommandManager
 
         public void ExecuteScript(Command command)
         {
-            ExecuteScript(command.Script);
+            ExecuteScript(command.Script, command.ShowOutput);
         }
 
-        public void ExecuteScript(string script)
+        public void ExecuteScript(string script, bool showOutput)
         {
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            script = script.Replace((char)10, '&'); // replace LF with &
+            Process process = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            string startArg = "/C";
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            if (showOutput)
+            {
+                startArg = "/K";
+                startInfo.WindowStyle = ProcessWindowStyle.Normal;
+            }
             startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = "/C " + script;
+            startInfo.Arguments = startArg + script;
             process.StartInfo = startInfo;
             process.Start();
         }
@@ -144,7 +158,20 @@ namespace CommandManager
             {
                 CommandList.Add(dlg.Command);
                 LB_Commands.SelectedItem = dlg.Command;
+                LB_Commands.UpdateLayout();
+                
             }
+        }
+
+        private void InitSocialMedia()
+        {
+            string linkTwitter = "https://twitter.com/Rhatalin";
+            Btn_Twitter.Tag = linkTwitter;
+            Btn_Twitter.ToolTip = linkTwitter;
+
+            string linkGithub = "https://github.com/Rhatalin";
+            Btn_Github.Tag = linkGithub;
+            Btn_Github.ToolTip = linkGithub;
         }
 
         // Events
@@ -156,27 +183,30 @@ namespace CommandManager
 
         private void LB_Commands_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            double height = 0;
-            foreach (Command c in CommandList)
+            if (btnLastDoubleClickTimestamp != e.Timestamp) // check if last double click was from a button
             {
-                var item = (ListBoxItem)LB_Commands.ItemContainerGenerator.ContainerFromItem(c);
-                height += item.ActualHeight;
-            }
+                double height = 0;
+                foreach (Command c in CommandList)
+                {
+                    var item = (ListBoxItem)LB_Commands.ItemContainerGenerator.ContainerFromItem(c);
+                    height += item.ActualHeight;
+                }
 
-            // check if mouseevent happend over a listbox item
-            int heigthFix = 2; // somehow the height is 2 pixles to small
-            if (e.GetPosition(this).Y <= LB_Commands.TransformToAncestor(this).Transform(new Point(0, 0)).Y + height + heigthFix)
-            {
-                Command cmd = (Command)LB_Commands.SelectedItem;
-                DialogCommand dlg = new DialogCommand(cmd, this);
-                dlg.ShowDialog();
+                // check if mouseevent happend over a listbox item
+                int heigthFix = 2; // somehow the height is 2 pixles to small
+                if (e.GetPosition(this).Y <= LB_Commands.TransformToAncestor(this).Transform(new Point(0, 0)).Y + height + heigthFix)
+                {
+                    Command cmd = (Command)LB_Commands.SelectedItem;
+                    DialogCommand dlg = new DialogCommand(cmd, this);
+                    dlg.ShowDialog();
 
+                }
+                else // add item dialog
+                {
+                    LB_Commands_AddNew();
+                }
             }
-            else // add item dialog
-            {
-                LB_Commands_AddNew();
-            }
-
+            e.Handled = true;
         }
 
         private void MI_Import_Click(object sender, RoutedEventArgs e)
@@ -189,7 +219,14 @@ namespace CommandManager
             openDlg.FileName = filenameCustom;
             if (openDlg.ShowDialog() == true)
             {
-                LoadXML(openDlg.FileName);
+                try
+                {
+                    LoadXML(openDlg.FileName);
+                }
+                catch (InvalidOperationException)
+                {
+                    MessageBox.Show("There was an error in parsing the xml file!", "Invalid XML", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -279,6 +316,33 @@ namespace CommandManager
             {
                 CommandList.Remove(c);
             }
+        }
+
+        private void Btn_SocialMedia_Click(object sender, RoutedEventArgs e)
+        {
+            string uri = ((Button)sender).Tag.ToString();
+            Process.Start(uri);
+        }
+
+        private void Btn_OutputState_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            Command cmd = GetCommandById((int)btn.Tag);
+            if (cmd.ShowOutput)
+            {
+                btn.Style = FindResource("btn-outline-danger") as Style;
+                GetCommandById((int)btn.Tag).ShowOutput = false;
+            }
+            else
+            {
+                btn.Style = FindResource("btn-outline-success") as Style;
+                GetCommandById((int)btn.Tag).ShowOutput = true;
+            }
+        }
+
+        private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            btnLastDoubleClickTimestamp = e.Timestamp; // save double click timestamp
         }
     }
 }

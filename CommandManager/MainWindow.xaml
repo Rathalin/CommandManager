@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CommandManager"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Closing="Window_Closing"
-        Title="CommandManager" Height="600" Width="800">
+        Title="Command Manager" Height="600" Width="800" MinHeight="350" MinWidth="450">
     <DockPanel>
         <Border DockPanel.Dock="Top" Background="{StaticResource bootstrap-violet}">
             <DockPanel>
@@ -19,19 +19,19 @@
         </Border>
         <Grid x:Name="Grid_Hints" DockPanel.Dock="Bottom" Visibility="{Binding Path=HintVisibility}" >
             <StackPanel Margin="5" >
-                <Border Style="{StaticResource border-alert-success}">
+                <Border Style="{StaticResource border-alert-success}" Margin="0 2 0 0">
                     <DockPanel HorizontalAlignment="Center">
                         <Image Source="info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
                         <TextBlock  Style="{StaticResource textbox-alert-success}" Text="You can double click on empty space to add a command!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </DockPanel>
                 </Border>
-                <Border Style="{StaticResource border-alert-warning}">
+                <Border Style="{StaticResource border-alert-warning}" Margin="0 5 0 0">
                     <DockPanel HorizontalAlignment="Center">
                         <Image Source="info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
                         <TextBlock  Style="{StaticResource textbox-alert-warning}" Text="You can double click commands to edit them!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </DockPanel>
                 </Border>
-                <Border Style="{StaticResource border-alert-danger}">
+                <Border Style="{StaticResource border-alert-danger}" Margin="0 5 0 0">
                     <DockPanel HorizontalAlignment="Center">
                         <Image Source="info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
                         <TextBlock Style="{StaticResource textbox-alert-danger}" Text="You can right click commands to delete them!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
@@ -39,27 +39,51 @@
                 </Border>
             </StackPanel>
         </Grid>
-        <Button x:Name="Btn_AddCmd" Content="Add" Click="Btn_AddCmd_Click" DockPanel.Dock="Bottom" Style="{StaticResource btn-secondary}" MinWidth="100"></Button>
+        <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Center">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" FlowDirection="RightToLeft" Width="120" Margin="10 0">
+                <Button x:Name="Btn_Twitter" Style="{StaticResource Style_Button_BorderlessTransparent}" Click="Btn_SocialMedia_Click">
+                    <Image Source="/images/Twitter_Logo_100.png"></Image>
+                </Button>
+                <Button x:Name="Btn_Github" Style="{StaticResource Style_Button_BorderlessTransparent}" Click="Btn_SocialMedia_Click">
+                    <Image Source="/images/Github_Logo_100.png"></Image>
+                </Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+                <TextBlock Text="Daniel Flockert" Margin="0 0 3 0" FontFamily="Eras ITC" FontSize="10"></TextBlock>
+                <TextBlock Text="2019" FontFamily="Eras ITC" FontSize="10"></TextBlock>
+            </StackPanel>
+            <Button x:Name="Btn_AddCmd" Content="Add" Click="Btn_AddCmd_Click" Style="{StaticResource btn-secondary}" MinWidth="100"></Button>
+
+        </DockPanel>
         <ListBox x:Name="LB_Commands" HorizontalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True" IsTextSearchEnabled="True" SelectionMode="Single"
                  ScrollViewer.VerticalScrollBarVisibility="Visible" MouseDoubleClick="LB_Commands_MouseDoubleClick">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type local:Command}">
                     <GroupBox Tag="{Binding Path=ID}" MouseRightButtonDown="GroupBox_MouseRightButtonDown">
                         <GroupBox.Header>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Path=Name}" FontSize="14" FontWeight="SemiBold" Grid.Column="0" Grid.Row="0" Margin="0 0 10 0"></TextBlock>
-                                <TextBlock Text="{Binding Path=Description}" Grid.Column="1" Grid.Row="0" Padding="2"></TextBlock>
-                            </StackPanel>
+                            <TextBlock Text="{Binding Path=Name}" FontSize="14" FontWeight="SemiBold" Grid.Column="0" Grid.Row="0" Margin="0 0 10 0"></TextBlock>
                         </GroupBox.Header>
                         <DockPanel>
-                            <Button Content="Execute" DockPanel.Dock="Right" VerticalAlignment="Top" Style="{StaticResource btn-primary}" Click="Btn_Execute_Click" Tag="{Binding Path=ID}"></Button>
-                            <Button Content="Delete" DockPanel.Dock="Right" VerticalAlignment="Top" Style="{StaticResource btn-outline-danger}" Click="Btn_Remove_Click" Tag="{Binding Path=ID}"></Button>
-                            <Button Content="Edit" DockPanel.Dock="Right" VerticalAlignment="Top" Style="{StaticResource btn-outline-warning}" Click="Btn_Edit_Click" Tag="{Binding Path=ID}"></Button>
-                            <Button Content="Up" DockPanel.Dock="Right" VerticalAlignment="Top" Style="{StaticResource btn-outline-dark}" Click="Btn_Up_Click" Tag="{Binding Path=ID}"></Button>
-                            <Button Content="Down" DockPanel.Dock="Right" VerticalAlignment="Top" Style="{StaticResource btn-outline-dark}" Click="Btn_Down_Click" Tag="{Binding Path=ID}"></Button>
-                            <TextBlock Text="{Binding Path=Script}" FontFamily="Consolas" Foreground="Gray" Grid.ColumnSpan="2" Grid.Row="1"></TextBlock>
+                            <DockPanel DockPanel.Dock="Top">
+                                <Button Content="Execute" DockPanel.Dock="Right" Style="{StaticResource btn-primary}" Click="Btn_Execute_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                <Button Content="Delete" DockPanel.Dock="Right" Style="{StaticResource btn-outline-danger}" Click="Btn_Remove_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                <Button Content="Edit" DockPanel.Dock="Right" Style="{StaticResource btn-outline-warning}" Click="Btn_Edit_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                <Button Content="Up" DockPanel.Dock="Right" Style="{StaticResource btn-outline-secondary}" Click="Btn_Up_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                <Button Content="Down" DockPanel.Dock="Right" Style="{StaticResource btn-outline-secondary}" Click="Btn_Down_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                <Button x:Name="Btn_ShowOutput" Content="Output" DockPanel.Dock="Right" Click="Btn_OutputState_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                <TextBlock Text="{Binding Path=Description}" Grid.Column="1" Grid.Row="0" Padding="5" FontStyle="Italic"></TextBlock>
+                            </DockPanel>
+                            <TextBlock Text="{Binding Path=ScriptPreview}" FontFamily="Consolas" Foreground="Gray"></TextBlock>
                         </DockPanel>
                     </GroupBox>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=ShowOutput}" Value="True">
+                            <Setter TargetName="Btn_ShowOutput" Property="Style" Value="{StaticResource btn-outline-success}"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=ShowOutput}" Value="False">
+                            <Setter TargetName="Btn_ShowOutput" Property="Style" Value="{StaticResource btn-outline-danger}"></Setter>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

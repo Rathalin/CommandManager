@@ -14,11 +14,12 @@ namespace CommandManager
 
         public Command() { }
 
-        public Command(string name, string description, string script)
+        public Command(string name, string description, string script, bool showOutput)
         {
             _name = name;
             _desc = description;
             _script = script;
+            _showOutput = showOutput;
         }
 
         // Attributes
@@ -61,8 +62,45 @@ namespace CommandManager
             get { return _script; }
             set
             {
-                _script = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Command"));
+                _script = value.Trim();
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Script"));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ScriptPreview"));
+            }
+        }
+
+        [XmlIgnore]
+        private bool _showOutput = false;
+        [XmlElement(ElementName = "ShowOutput")]
+        public bool ShowOutput
+        {
+            get { return _showOutput; }
+            set
+            {
+                _showOutput = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowOutput"));
+            }
+        }
+
+        [XmlIgnore]
+        public string ScriptPreview
+        {
+            get
+            {
+                string preview = "";
+                var lines = _script.Split(new char[] { '\n' });
+                if (lines.Length > 3)
+                {
+                    for (int i = 0; i < 3 || i < lines.Length; i++)
+                    {
+                        preview += lines[i] + "\n";
+                    }
+                    preview += "...";
+                }
+                else
+                {
+                    preview = _script;
+                }
+                return preview;
             }
         }
 
