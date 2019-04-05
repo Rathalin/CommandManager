@@ -1,0 +1,15 @@
+﻿<Window x:Class="CommandManager.Dialogs.DialogUniversal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CommandManager.Dialogs"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner"
+        Title="DialogUniversal" Height="300" Width="450">
+    <DockPanel Margin="10">
+        <StackPanel x:Name="SP_Buttons" DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"></StackPanel>
+        <Grid x:Name="Grid_Main" Margin="10">
+            <TextBlock x:Name="TB_Message" TextWrapping="Wrap" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalAlignment="Center">Example Message</TextBlock>
+        </Grid>
+    </DockPanel>
+</Window>

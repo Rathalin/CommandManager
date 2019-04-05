@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommandManager"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        xmlns:local_data="clr-namespace:CommandManager.Data"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" 
         Closing="Window_Closing"
         Title="Command Manager 1.0" Height="600" Width="800" MinHeight="350" MinWidth="450">
     <DockPanel>
@@ -58,8 +59,8 @@
         <ListBox x:Name="LB_Commands" HorizontalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True" IsTextSearchEnabled="True" SelectionMode="Single"
                  ScrollViewer.VerticalScrollBarVisibility="Visible" MouseDoubleClick="LB_Commands_MouseDoubleClick">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type local:Command}">
-                    <GroupBox Tag="{Binding Path=ID}" MouseRightButtonDown="GroupBox_MouseRightButtonDown">
+                <DataTemplate DataType="{x:Type local_data:Command}">
+                    <GroupBox Tag="{Binding Path=ID}" MouseRightButtonDown="GB_MouseRightButtonDown">
                         <GroupBox.Header>
                             <TextBlock Text="{Binding Path=Name}" FontSize="14" FontWeight="SemiBold" Grid.Column="0" Grid.Row="0" Margin="0 0 10 0"></TextBlock>
                         </GroupBox.Header>

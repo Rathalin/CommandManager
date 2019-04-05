@@ -18,6 +18,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml.Serialization;
+using CommandManager.Data;
+using CommandManager.Dialogs;
+using static CommandManager.Dialogs.DialogUniversal;
 
 namespace CommandManager
 {
@@ -41,9 +44,9 @@ namespace CommandManager
             {
                 LoadXML(pathFullDefault);
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
-                // No Autosave created when program first started
+                // No Autosave yet created when program first started
             }
             catch (InvalidOperationException)
             {
@@ -224,7 +227,12 @@ namespace CommandManager
                 }
                 catch (InvalidOperationException)
                 {
-                    MessageBox.Show("There was an error in parsing the xml file!", "Invalid XML", MessageBoxButton.OK, MessageBoxImage.Error);
+                    List<BtnData> dlgButtons = new List<BtnData>();
+                    dlgButtons.Add(new BtnData("Ok", "btn-primary", true));
+                    DialogUniversal dlg = new DialogUniversal("Error in parsing XML file!", "Invalid XML", dlgButtons, this);
+                    dlg.Height = 150;
+                    dlg.Width = 280;
+                    dlg.ShowDialog();
                 }
             }
         }
@@ -307,11 +315,16 @@ namespace CommandManager
             }
         }
 
-        private void GroupBox_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void GB_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             Command c = GetCommandById((int)((GroupBox)sender).Tag);
-            var result = MessageBox.Show("Permanently delete the command " + c.Name + "?", "Remove", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.Yes)
+            List<BtnData> dlgButtons = new List<BtnData>();
+            dlgButtons.Add(new BtnData("Remove", "btn-danger", true));
+            dlgButtons.Add(new BtnData("Cancel", "btn-secondary", false));
+            DialogUniversal dlg = new DialogUniversal("Permanently delete the command " + c.Name + "?", "Delete", dlgButtons, this);
+            dlg.Height = 150;
+            dlg.Width = 350;
+            if (dlg.ShowDialog() == true)
             {
                 CommandList.Remove(c);
             }

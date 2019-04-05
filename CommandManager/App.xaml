@@ -6,7 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="BootstrapImitation.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Style/BootstrapImitation.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 
 

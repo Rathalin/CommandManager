@@ -11,8 +11,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using CommandManager.Data;
 
-namespace CommandManager
+namespace CommandManager.Dialogs
 {
     /// <summary>
     /// Interaction logic for DialogCommand.xaml

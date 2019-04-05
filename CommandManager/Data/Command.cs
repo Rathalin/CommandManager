@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace CommandManager
+namespace CommandManager.Data
 {
     public class Command : INotifyPropertyChanged
     {

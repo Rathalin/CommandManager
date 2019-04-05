@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>images\Logo_CommandManager_experimental.ico</ApplicationIcon>
+    <ApplicationIcon>Images\Logo_CommandManager_experimental.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
@@ -59,11 +59,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="BootstrapImitation.xaml">
+    <Page Include="Dialogs\DialogUniversal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="DialogCommand.xaml">
+    <Page Include="Style\BootstrapImitation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\DialogCommand.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -75,9 +79,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Command.cs" />
-    <Compile Include="DialogCommand.xaml.cs">
+    <Compile Include="Data\Command.cs" />
+    <Compile Include="Dialogs\DialogCommand.xaml.cs">
       <DependentUpon>DialogCommand.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\DialogUniversal.xaml.cs">
+      <DependentUpon>DialogUniversal.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -111,18 +118,18 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\CommandManager_v1.PNG" />
-    <Resource Include="images\CommandManager_v1_0.PNG" />
-    <Resource Include="images\info_black.png" />
-    <Resource Include="images\info_yellow.png" />
-    <Resource Include="images\info_yellow_small.png" />
-    <Resource Include="images\Twitter_Logo_100.png" />
+    <Resource Include="Images\CommandManager_v1.PNG" />
+    <Resource Include="Images\CommandManager_v1_0.PNG" />
+    <Resource Include="Images\info_black.png" />
+    <Resource Include="Images\info_yellow.png" />
+    <Resource Include="Images\info_yellow_small.png" />
+    <Resource Include="Images\Twitter_Logo_100.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\Github_Logo_100.png" />
+    <Resource Include="Images\Github_Logo_100.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\Logo_CommandManager_experimental.ico" />
+    <Resource Include="Images\Logo_CommandManager_experimental.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
