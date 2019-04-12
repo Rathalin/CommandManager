@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CommandManager.Data;
+using System.IO;
+using Microsoft.Win32;
+using static CommandManager.Dialogs.DialogUniversal;
 
 namespace CommandManager.Dialogs
 {
@@ -60,5 +63,17 @@ namespace CommandManager.Dialogs
             Close();
         }
 
+        private void Btn_LoadBatch_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openDlg = new OpenFileDialog();
+            openDlg.InitialDirectory = Directory.GetCurrentDirectory();
+            openDlg.DefaultExt = ".bat";
+            openDlg.Filter = "batch file (*.bat)|*.bat| txt file (*.txt)|*.txt| All files (*.*)|*.*";
+            openDlg.AddExtension = true;
+            if (openDlg.ShowDialog() == true)
+            {
+                TB_Command.Text = File.ReadAllText(openDlg.FileName);
+            }
+        }
     }
 }

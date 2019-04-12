@@ -90,7 +90,7 @@ namespace CommandManager.Data
                 var lines = _script.Split(new char[] { '\n' });
                 if (lines.Length > 3)
                 {
-                    for (int i = 0; i < 3 || i < lines.Length; i++)
+                    for (int i = 0; i < 3; i++)
                     {
                         preview += lines[i] + "\n";
                     }

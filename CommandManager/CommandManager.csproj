@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Images\Logo_CommandManager_experimental.ico</ApplicationIcon>
+    <ApplicationIcon>Images\Logo_CommandManager_Violet.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
@@ -129,7 +129,7 @@
     <Resource Include="Images\Github_Logo_100.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\Logo_CommandManager_experimental.ico" />
+    <Resource Include="Images\Logo_CommandManager_Violet.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
