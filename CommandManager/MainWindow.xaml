@@ -18,30 +18,37 @@
                 </Menu>
             </DockPanel>
         </Border>
-        <Grid x:Name="Grid_Hints" DockPanel.Dock="Bottom" Visibility="{Binding Path=HintVisibility}" >
-            <StackPanel Margin="5" >
+        <Grid x:Name="Grid_Hints" DockPanel.Dock="Bottom" Visibility="{Binding Path=HintVisibility}">
+            <StackPanel Margin="5 0 5 5">
                 <Border Style="{StaticResource border-alert-success}" Margin="0 2 0 0">
                     <DockPanel HorizontalAlignment="Center">
-                        <Image Source="info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
+                        <Image Source="images/info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
                         <TextBlock  Style="{StaticResource textbox-alert-success}" Text="You can double click on empty space to add a command!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </DockPanel>
                 </Border>
                 <Border Style="{StaticResource border-alert-warning}" Margin="0 5 0 0">
                     <DockPanel HorizontalAlignment="Center">
-                        <Image Source="info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
+                        <Image Source="images/info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
                         <TextBlock  Style="{StaticResource textbox-alert-warning}" Text="You can double click commands to edit them!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </DockPanel>
                 </Border>
                 <Border Style="{StaticResource border-alert-danger}" Margin="0 5 0 0">
                     <DockPanel HorizontalAlignment="Center">
-                        <Image Source="info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
+                        <Image Source="images/info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
                         <TextBlock Style="{StaticResource textbox-alert-danger}" Text="You can right click commands to delete them!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </DockPanel>
                 </Border>
+                <Border x:Name="B_Alert_Output" Style="{StaticResource border-alert-secondary}" Margin="0 5 0 0">
+                    <DockPanel HorizontalAlignment="Center">
+                        <Image x:Name="Image_Alert_Output" Source="images/info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
+                        <TextBlock Style="{StaticResource textbox-alert-secondary}" Text="The output button controls if the command output window is shown!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                    </DockPanel>
+                </Border>
+                <DockPanel></DockPanel>
             </StackPanel>
         </Grid>
         <DockPanel DockPanel.Dock="Bottom" VerticalAlignment="Center">
-            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" FlowDirection="RightToLeft" Width="120" Margin="10 0">
+            <StackPanel Visibility="{Binding Path=HintVisibility}" DockPanel.Dock="Right" Orientation="Horizontal" FlowDirection="RightToLeft" Width="120" Margin="10 0">
                 <Button x:Name="Btn_Twitter" Style="{StaticResource Style_Button_BorderlessTransparent}" Click="Btn_SocialMedia_Click">
                     <Image Source="/images/Twitter_Logo_100.png"></Image>
                 </Button>
@@ -49,12 +56,11 @@
                     <Image Source="/images/Github_Logo_100.png"></Image>
                 </Button>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
+            <StackPanel Visibility="{Binding Path=HintVisibility}" Orientation="Horizontal" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
                 <TextBlock Text="Daniel Flockert" Margin="0 0 3 0" FontFamily="Eras ITC" FontSize="10"></TextBlock>
                 <TextBlock Text="2019" FontFamily="Eras ITC" FontSize="10"></TextBlock>
             </StackPanel>
             <Button x:Name="Btn_AddCmd" Content="Add" Click="Btn_AddCmd_Click" Style="{StaticResource btn-secondary}" MinWidth="100"></Button>
-
         </DockPanel>
         <ListBox x:Name="LB_Commands" HorizontalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True" IsTextSearchEnabled="True" SelectionMode="Single"
                  ScrollViewer.VerticalScrollBarVisibility="Visible" MouseDoubleClick="LB_Commands_MouseDoubleClick">
