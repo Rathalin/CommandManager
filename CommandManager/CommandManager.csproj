@@ -38,6 +38,16 @@
     <ApplicationIcon>Images\Logo_CommandManager_Violet.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PersonalUsage|AnyCPU'">
+    <OutputPath>bin\PersonalUsage\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -118,11 +128,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\CommandManager_v1.PNG" />
-    <Resource Include="Images\CommandManager_v1_0.PNG" />
     <Resource Include="Images\info_black.png" />
-    <Resource Include="Images\info_yellow.png" />
-    <Resource Include="Images\info_yellow_small.png" />
     <Resource Include="Images\Twitter_Logo_100.png" />
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +136,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Logo_CommandManager_Violet.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\info_white_15.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

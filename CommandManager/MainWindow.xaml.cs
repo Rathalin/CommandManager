@@ -147,7 +147,7 @@ namespace CommandManager
             return null;
         }
 
-        public Command SelectCommandFromButton(Button btn)
+        public Command GetCommandByButton(Button btn)
         {
             int id = (int)btn.Tag;
             LB_Commands.SelectedIndex = id; //visual improvemend
@@ -199,7 +199,7 @@ namespace CommandManager
                 if (e.GetPosition(this).Y <= LB_Commands.TransformToAncestor(this).Transform(new Point(0, 0)).Y + height + heigthFix)
                 {
                     Command cmd = (Command)LB_Commands.SelectedItem;
-                    DialogCommand dlg = new DialogCommand(cmd, this);
+                    DialogCommand dlg = new DialogCommand("Edit", cmd, this);
                     dlg.ShowDialog();
 
                 }
@@ -254,21 +254,21 @@ namespace CommandManager
 
         private void Btn_Edit_Click(object sender, RoutedEventArgs e)
         {
-            Command c = SelectCommandFromButton((Button)sender);
-            DialogCommand dlg = new DialogCommand(c, this);
+            Command c = GetCommandByButton((Button)sender);
+            DialogCommand dlg = new DialogCommand("Edit", c, this);
             dlg.ShowDialog();
 
         }
 
         private void Btn_Remove_Click(object sender, RoutedEventArgs e)
         {
-            Command c = SelectCommandFromButton((Button)sender);
+            Command c = GetCommandByButton((Button)sender);
             CommandList.Remove(c);
         }
 
         private void Btn_Execute_Click(object sender, RoutedEventArgs e)
         {
-            Command c = SelectCommandFromButton((Button)sender);
+            Command c = GetCommandByButton((Button)sender);
             ExecuteScript(c);
         }
 
@@ -316,7 +316,7 @@ namespace CommandManager
         }
 
         private void GB_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
+        { 
             Command c = GetCommandById((int)((GroupBox)sender).Tag);
             List<BtnData> dlgButtons = new List<BtnData>();
             dlgButtons.Add(new BtnData("Remove", "btn-danger", true));

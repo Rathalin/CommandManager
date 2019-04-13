@@ -7,7 +7,7 @@
         xmlns:local_data="clr-namespace:CommandManager.Data"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" 
         Closing="Window_Closing"
-        Title="Command Manager 1.0" Height="600" Width="800" MinHeight="350" MinWidth="450">
+        Title="Command Manager" Height="600" Width="800" MinHeight="350" MinWidth="450">
     <DockPanel>
         <Border DockPanel.Dock="Top" Background="{StaticResource bootstrap-violet}">
             <DockPanel>
@@ -22,25 +22,25 @@
             <StackPanel Margin="5 0 5 5">
                 <Border Style="{StaticResource border-alert-success}" Margin="0 2 0 0">
                     <DockPanel HorizontalAlignment="Center">
-                        <Image Source="images/info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
+                        <Image Source="images/info_white_15.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
                         <TextBlock  Style="{StaticResource textbox-alert-success}" Text="You can double click on empty space to add a command!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </DockPanel>
                 </Border>
                 <Border Style="{StaticResource border-alert-warning}" Margin="0 5 0 0">
                     <DockPanel HorizontalAlignment="Center">
-                        <Image Source="images/info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
+                        <Image Source="images/info_white_15.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
                         <TextBlock  Style="{StaticResource textbox-alert-warning}" Text="You can double click commands to edit them!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </DockPanel>
                 </Border>
                 <Border Style="{StaticResource border-alert-danger}" Margin="0 5 0 0">
                     <DockPanel HorizontalAlignment="Center">
-                        <Image Source="images/info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
+                        <Image Source="images/info_white_15.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
                         <TextBlock Style="{StaticResource textbox-alert-danger}" Text="You can right click commands to delete them!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </DockPanel>
                 </Border>
                 <Border x:Name="B_Alert_Output" Style="{StaticResource border-alert-secondary}" Margin="0 5 0 0">
                     <DockPanel HorizontalAlignment="Center">
-                        <Image x:Name="Image_Alert_Output" Source="images/info_yellow_small.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
+                        <Image x:Name="Image_Alert_Output" Source="images/info_white_15.png" Width="12" DockPanel.Dock="Left" Margin="10 0"></Image>
                         <TextBlock Style="{StaticResource textbox-alert-secondary}" Text="The output button controls if the command output window is shown!" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </DockPanel>
                 </Border>
