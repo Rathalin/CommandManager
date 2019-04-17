@@ -9,8 +9,8 @@
     <DockPanel Margin="5">
         <StackPanel DockPanel.Dock="Top">
             <DockPanel>
-                <Label x:Name="Label_Name" Content="Name:" DockPanel.Dock="Left"></Label>
-                <TextBox x:Name="TB_Name" VerticalAlignment="Center" TabIndex="0" Style="{StaticResource form-control}"></TextBox>
+                <Label x:Name="Label_Name" Content="Name (required):" DockPanel.Dock="Left"></Label>
+                <TextBox x:Name="TB_Name" VerticalAlignment="Center" TabIndex="0" Style="{StaticResource form-control}" TextChanged="TB_Name_TextChanged"></TextBox>
             </DockPanel>
             <DockPanel>
                 <Label x:Name="Label_Desc" Content="Description:" DockPanel.Dock="Left"></Label>

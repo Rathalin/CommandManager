@@ -191,7 +191,6 @@ namespace CommandManager
 
         private void LB_Commands_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
             if (btnLastDoubleClickTimestamp != e.Timestamp) // check if last double click was from a button
             {
                 if (VisualTreeHelper.HitTest(this, e.GetPosition(this)).VisualHit.GetType() != typeof(ScrollViewer)) // double click on listboxitem
@@ -199,7 +198,7 @@ namespace CommandManager
                     Command cmd = (Command)LB_Commands.SelectedItem;
                     LB_Commands_Edit(cmd);
                 }
-                else // double click on empty space in listbox (type scroll viewer)
+                else // double click on empty space in listbox
                 {
                     LB_Commands_AddNew();
                 }

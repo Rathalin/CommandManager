@@ -15,6 +15,7 @@ using CommandManager.Data;
 using System.IO;
 using Microsoft.Win32;
 using static CommandManager.Dialogs.DialogUniversal;
+using System.ComponentModel;
 
 namespace CommandManager.Dialogs
 {
@@ -46,6 +47,7 @@ namespace CommandManager.Dialogs
         public DialogCommand(Window owner)
         {
             InitializeComponent();
+            DataContext = this;
             Owner = owner;
             Command = new Command();
         }
@@ -66,11 +68,18 @@ namespace CommandManager.Dialogs
 
         private void Btn_Save_Click(object sender, RoutedEventArgs e)
         {
-            Command.Name = TB_Name.Text;
-            Command.Description = TB_Desc.Text;
-            Command.Script = TB_Command.Text;
-            DialogResult = true;
-            Close();
+            if (string.IsNullOrEmpty(TB_Name.Text) || string.IsNullOrWhiteSpace(TB_Name.Text)) // no command name entered
+            {
+                TB_Name.Style = FindResource("form-control-danger") as Style;
+            }
+            else // no input errors
+            {
+                Command.Name = TB_Name.Text;
+                Command.Description = TB_Desc.Text;
+                Command.Script = TB_Command.Text;
+                DialogResult = true;
+                Close();
+            }
         }
 
         private void Btn_LoadBatch_Click(object sender, RoutedEventArgs e)
@@ -83,6 +92,18 @@ namespace CommandManager.Dialogs
             if (openDlg.ShowDialog() == true)
             {
                 TB_Command.Text = File.ReadAllText(openDlg.FileName);
+            }
+        }
+
+        private void TB_Name_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(TB_Name.Text) || string.IsNullOrWhiteSpace(TB_Name.Text)) // no command name entered
+            {
+                TB_Name.Style = FindResource("form-control-danger") as Style;
+            }
+            else
+            {
+                TB_Name.Style = FindResource("form-control") as Style;
             }
         }
     }
