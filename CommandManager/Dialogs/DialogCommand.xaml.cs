@@ -25,6 +25,11 @@ namespace CommandManager.Dialogs
     {
         // Constructors
 
+        public DialogCommand(string title, Window owner) : this(owner)
+        {
+            Title = title;
+        }
+
         public DialogCommand(string title, Command commandScript, Window owner) : this(commandScript, owner)
         {
             Title = title;

@@ -18,7 +18,7 @@
             </DockPanel>
             <DockPanel x:Name="DP_Cmd">
                 <Label DockPanel.Dock="Left" x:Name="Label_Cmd" Content="Command Script:"></Label>
-                <Button x:Name="Btn_LoadBatch" DockPanel.Dock="Right" Style="{StaticResource btn-light}" Content="Load from batch file" Click="Btn_LoadBatch_Click"></Button>
+                <Button x:Name="Btn_LoadBatch" DockPanel.Dock="Right" Style="{StaticResource btn-light}" Content="Load from batch file" Click="Btn_LoadBatch_Click" TabIndex="2"></Button>
                 <Label></Label>
             </DockPanel>
         </StackPanel>
@@ -27,9 +27,9 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button x:Name="Btn_Cancel" Style="{StaticResource btn-secondary}" Content="Cancel" Click="Btn_Cancel_Click" Grid.Column="0" TabIndex="3" Width="120"></Button>
-            <Button x:Name="Btn_Save" Style="{StaticResource btn-secondary}" Content="Save" Click="Btn_Save_Click" Grid.Column="1" TabIndex="4" Width="120"></Button>
+            <Button x:Name="Btn_Cancel" Style="{StaticResource btn-secondary}" Content="Cancel" Click="Btn_Cancel_Click" Grid.Column="0" Width="120"></Button>
+            <Button x:Name="Btn_Save" Style="{StaticResource btn-secondary}" Content="Save" Click="Btn_Save_Click" Grid.Column="1" Width="120"></Button>
         </Grid>
-        <TextBox x:Name="TB_Command" TextWrapping="Wrap" AcceptsReturn="True" TabIndex="2" FontFamily="Consolas" Style="{StaticResource form-control}"></TextBox>
+        <TextBox x:Name="TB_Command" TextWrapping="Wrap" AcceptsReturn="True" TabIndex="3" FontFamily="Consolas" Style="{StaticResource form-control}"></TextBox>
     </DockPanel>
 </Window>

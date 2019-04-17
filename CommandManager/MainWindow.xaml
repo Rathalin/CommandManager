@@ -85,10 +85,10 @@
                     </GroupBox>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding Path=ShowOutput}" Value="True">
-                            <Setter TargetName="Btn_ShowOutput" Property="Style" Value="{StaticResource btn-success}"></Setter>
+                            <Setter TargetName="Btn_ShowOutput" Property="Style" Value="{StaticResource btn-dark}"></Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Path=ShowOutput}" Value="False">
-                            <Setter TargetName="Btn_ShowOutput" Property="Style" Value="{StaticResource btn-danger}"></Setter>
+                            <Setter TargetName="Btn_ShowOutput" Property="Style" Value="{StaticResource btn-outline-secondary}"></Setter>
                         </DataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>

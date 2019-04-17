@@ -156,13 +156,19 @@ namespace CommandManager
 
         public void LB_Commands_AddNew()
         {
-            DialogCommand dlg = new DialogCommand(this);
+            DialogCommand dlg = new DialogCommand("Add", this);
             if (dlg.ShowDialog() == true)
             {
                 CommandList.Add(dlg.Command);
                 LB_Commands.SelectedItem = dlg.Command;
-                
+
             }
+        }
+
+        public void LB_Commands_Edit(Command cmd)
+        {
+            DialogCommand dlg = new DialogCommand("Edit", cmd, this);
+            dlg.ShowDialog();
         }
 
         private void InitSocialMedia()
@@ -185,31 +191,21 @@ namespace CommandManager
 
         private void LB_Commands_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+
             if (btnLastDoubleClickTimestamp != e.Timestamp) // check if last double click was from a button
             {
-                double height = 0;
-                foreach (Command c in CommandList)
-                {
-                    var item = (ListBoxItem)LB_Commands.ItemContainerGenerator.ContainerFromItem(c);
-                    height += item.ActualHeight;
-                }
-
-                // check if mouseevent happend over a listbox item
-                int heigthFix = 2; // somehow the height is 2 pixles to small
-                if (e.GetPosition(this).Y <= LB_Commands.TransformToAncestor(this).Transform(new Point(0, 0)).Y + height + heigthFix)
+                if (VisualTreeHelper.HitTest(this, e.GetPosition(this)).VisualHit.GetType() != typeof(ScrollViewer)) // double click on listboxitem
                 {
                     Command cmd = (Command)LB_Commands.SelectedItem;
-                    DialogCommand dlg = new DialogCommand("Edit", cmd, this);
-                    dlg.ShowDialog();
-
+                    LB_Commands_Edit(cmd);
                 }
-                else // add item dialog
+                else // double click on empty space in listbox (type scroll viewer)
                 {
                     LB_Commands_AddNew();
                 }
             }
-            e.Handled = true;
         }
+
 
         private void MI_Import_Click(object sender, RoutedEventArgs e)
         {
@@ -255,8 +251,7 @@ namespace CommandManager
         private void Btn_Edit_Click(object sender, RoutedEventArgs e)
         {
             Command c = GetCommandByButton((Button)sender);
-            DialogCommand dlg = new DialogCommand("Edit", c, this);
-            dlg.ShowDialog();
+            LB_Commands_Edit(c);
 
         }
 
@@ -316,7 +311,7 @@ namespace CommandManager
         }
 
         private void GB_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        { 
+        {
             Command c = GetCommandById((int)((GroupBox)sender).Tag);
             List<BtnData> dlgButtons = new List<BtnData>();
             dlgButtons.Add(new BtnData("Remove", "btn-danger", true));
