@@ -66,23 +66,25 @@
                  ScrollViewer.VerticalScrollBarVisibility="Visible" MouseDoubleClick="LB_Commands_MouseDoubleClick">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type local_data:Command}">
-                    <GroupBox Tag="{Binding Path=ID}" MouseRightButtonDown="GB_MouseRightButtonDown">
-                        <GroupBox.Header>
-                            <TextBlock Text="{Binding Path=Name}" FontSize="14" FontWeight="SemiBold" Grid.Column="0" Grid.Row="0" Margin="0 0 10 0"></TextBlock>
-                        </GroupBox.Header>
-                        <DockPanel>
-                            <DockPanel DockPanel.Dock="Top">
-                                <Button Content="Execute" DockPanel.Dock="Right" Style="{StaticResource btn-primary}" Click="Btn_Execute_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
-                                <Button x:Name="Btn_ShowOutput" Content="Output" DockPanel.Dock="Right" Click="Btn_OutputState_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
-                                <Button Content="Delete" DockPanel.Dock="Right" Style="{StaticResource btn-outline-danger}" Click="Btn_Remove_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
-                                <Button Content="Edit" DockPanel.Dock="Right" Style="{StaticResource btn-outline-warning}" Click="Btn_Edit_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
-                                <Button Content="Up" DockPanel.Dock="Right" Style="{StaticResource btn-outline-secondary}" Click="Btn_Up_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
-                                <Button Content="Down" DockPanel.Dock="Right" Style="{StaticResource btn-outline-secondary}" Click="Btn_Down_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
-                                <TextBlock Text="{Binding Path=Description}" Grid.Column="1" Grid.Row="0" Padding="5" FontStyle="Italic"></TextBlock>
+                    <Grid x:Name="G_Wrapping" Tag="{Binding Path=ID}" PreviewMouseRightButtonDown="G_Wrapping_PreviwMouseRightButtonDown" Background="Transparent">
+                        <GroupBox Tag="{Binding Path=ID}">
+                            <GroupBox.Header>
+                                <TextBlock Text="{Binding Path=Name}" FontSize="14" FontWeight="SemiBold" Grid.Column="0" Grid.Row="0" Margin="0 0 10 0"></TextBlock>
+                            </GroupBox.Header>
+                            <DockPanel>
+                                <DockPanel DockPanel.Dock="Top">
+                                    <Button Content="Execute" DockPanel.Dock="Right" Style="{StaticResource btn-primary}" Click="Btn_Execute_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                    <Button x:Name="Btn_ShowOutput" Content="Output" DockPanel.Dock="Right" Click="Btn_OutputState_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                    <Button Content="Delete" DockPanel.Dock="Right" Style="{StaticResource btn-outline-danger}" Click="Btn_Remove_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                    <Button Content="Edit" DockPanel.Dock="Right" Style="{StaticResource btn-outline-warning}" Click="Btn_Edit_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                    <Button Content="Up" DockPanel.Dock="Right" Style="{StaticResource btn-outline-secondary}" Click="Btn_Up_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                    <Button Content="Down" DockPanel.Dock="Right" Style="{StaticResource btn-outline-secondary}" Click="Btn_Down_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                    <TextBlock Text="{Binding Path=Description}" Grid.Column="1" Grid.Row="0" Padding="5" FontStyle="Italic"></TextBlock>
+                                </DockPanel>
+                                <TextBlock Text="{Binding Path=ScriptPreview}" FontFamily="Consolas" Foreground="Gray"></TextBlock>
                             </DockPanel>
-                            <TextBlock Text="{Binding Path=ScriptPreview}" FontFamily="Consolas" Foreground="Gray"></TextBlock>
-                        </DockPanel>
-                    </GroupBox>
+                        </GroupBox>
+                    </Grid>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding Path=ShowOutput}" Value="True">
                             <Setter TargetName="Btn_ShowOutput" Property="Style" Value="{StaticResource btn-dark}"></Setter>

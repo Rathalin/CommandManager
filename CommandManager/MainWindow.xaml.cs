@@ -154,7 +154,7 @@ namespace CommandManager
             return GetCommandById(id);
         }
 
-        public void LB_Commands_AddNew()
+        public void ShowCommandDialog_Add()
         {
             DialogCommand dlg = new DialogCommand("Add", this);
             if (dlg.ShowDialog() == true)
@@ -165,10 +165,24 @@ namespace CommandManager
             }
         }
 
-        public void LB_Commands_Edit(Command cmd)
+        public void ShowCommandDialog_Edit(Command cmd)
         {
             DialogCommand dlg = new DialogCommand("Edit", cmd, this);
             dlg.ShowDialog();
+        }
+
+        public void ShowCommandDialog_Remove(Command c)
+        {
+            List<BtnData> dlgButtons = new List<BtnData>();
+            dlgButtons.Add(new BtnData("Remove", "btn-danger", true));
+            dlgButtons.Add(new BtnData("Cancel", "btn-secondary", false));
+            DialogUniversal dlg = new DialogUniversal("Permanently delete the command " + c.Name + "?", "Delete", dlgButtons, this);
+            dlg.Height = 150;
+            dlg.Width = 350;
+            if (dlg.ShowDialog() == true)
+            {
+                CommandList.Remove(c);
+            }
         }
 
         private void InitSocialMedia()
@@ -186,7 +200,7 @@ namespace CommandManager
 
         private void Btn_AddCmd_Click(object sender, RoutedEventArgs e)
         {
-            LB_Commands_AddNew();
+            ShowCommandDialog_Add();
         }
 
         private void LB_Commands_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -196,15 +210,14 @@ namespace CommandManager
                 if (VisualTreeHelper.HitTest(this, e.GetPosition(this)).VisualHit.GetType() != typeof(ScrollViewer)) // double click on listboxitem
                 {
                     Command cmd = (Command)LB_Commands.SelectedItem;
-                    LB_Commands_Edit(cmd);
+                    ShowCommandDialog_Edit(cmd);
                 }
                 else // double click on empty space in listbox
                 {
-                    LB_Commands_AddNew();
+                    ShowCommandDialog_Add();
                 }
             }
         }
-
 
         private void MI_Import_Click(object sender, RoutedEventArgs e)
         {
@@ -250,7 +263,7 @@ namespace CommandManager
         private void Btn_Edit_Click(object sender, RoutedEventArgs e)
         {
             Command c = GetCommandByButton((Button)sender);
-            LB_Commands_Edit(c);
+            ShowCommandDialog_Edit(c);
 
         }
 
@@ -309,19 +322,10 @@ namespace CommandManager
             }
         }
 
-        private void GB_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void G_Wrapping_PreviwMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Command c = GetCommandById((int)((GroupBox)sender).Tag);
-            List<BtnData> dlgButtons = new List<BtnData>();
-            dlgButtons.Add(new BtnData("Remove", "btn-danger", true));
-            dlgButtons.Add(new BtnData("Cancel", "btn-secondary", false));
-            DialogUniversal dlg = new DialogUniversal("Permanently delete the command " + c.Name + "?", "Delete", dlgButtons, this);
-            dlg.Height = 150;
-            dlg.Width = 350;
-            if (dlg.ShowDialog() == true)
-            {
-                CommandList.Remove(c);
-            }
+            Command c = GetCommandById((int)((Grid)sender).Tag);
+            ShowCommandDialog_Remove(c);
         }
 
         private void Btn_SocialMedia_Click(object sender, RoutedEventArgs e)
