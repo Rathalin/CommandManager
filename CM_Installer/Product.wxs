@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"><?define CommandManager_TargetDir=$(var.CommandManager.TargetDir)?>
+  <Product Id="4646A1EA-6553-4101-98F6-73ED4129B845" Name="CommandManager_Installer" Language="1033" Version="1.0.0.0" Manufacturer="Daniel Flockert" UpgradeCode="088df219-02d3-4659-86ff-f4091f07c716">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <UIRef Id="WixUI_Minimal"/>
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate />
+
+    <Feature Id="ProductFeature" Title="Command Manager Installer" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="ApplicationShortcutDesktop" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Command Manager" />
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Command Manager"></Directory>
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="085BE6E1-3872-4ADE-A6EB-FC56B7AE1F54">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="My Application Name" Description="My Application Description" Target="[INSTALLFOLDER]" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\Daniel_Flockert\Command_Manager" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="98654D8B-746D-4C67-88C0-69BC0C333EDB">
+        <Shortcut Id="ApplicationDesktopShortcut" Name="Command Manager" Description="Manage Scripts" Target="[INSTALLFOLDER]" WorkingDirectory="APPLICATIONROOTDIRECTORY" />
+        <RemoveFolder Id="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\Daniel_Flockert\Command_Manager" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+      <!-- <Component Id="ProductComponent"> -->
+      <!-- TODO: Insert files, registry keys, and other resources here. -->
+      <!-- </Component> -->
+      <Component Id="Command_Manager_v1_0.exe" Guid="72cae1cd-6f23-4348-800e-0008c6ccf6cf">
+        <File Id="Command_Manager_v1_0.exe" Name="Command Manager v1_0.exe" Source="$(var.CommandManager_TargetDir)Command Manager v1_0.exe" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
