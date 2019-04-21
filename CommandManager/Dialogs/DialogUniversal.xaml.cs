@@ -97,5 +97,13 @@ namespace CommandManager.Dialogs
             public string StaticResourceKey { get; set; }
             public bool? BtnDialogResult { get; set; }
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
+        }
     }
 }

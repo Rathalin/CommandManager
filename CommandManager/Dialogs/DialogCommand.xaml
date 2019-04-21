@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommandManager.Dialogs"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="CommandScript" Height="420" Width="600" MinHeight="250" MinWidth="350">
+        Title="CommandScript" Height="420" Width="600" MinHeight="250" MinWidth="350"
+        KeyDown="Window_KeyDown">
     <DockPanel Margin="5">
         <StackPanel DockPanel.Dock="Top">
             <DockPanel>

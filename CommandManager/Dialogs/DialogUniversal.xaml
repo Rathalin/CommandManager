@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommandManager.Dialogs"
         mc:Ignorable="d" WindowStartupLocation="CenterOwner"
-        Title="DialogUniversal" Height="300" Width="450">
+        Title="DialogUniversal" Height="300" Width="450"
+        KeyDown="Window_KeyDown">
     <DockPanel Margin="10">
         <StackPanel x:Name="SP_Buttons" DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"></StackPanel>
         <Grid x:Name="Grid_Main" Margin="10">
