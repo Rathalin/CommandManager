@@ -6,7 +6,7 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>3ce32cfd-a3fe-42a8-9265-82c9eb5ee2ed</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>CM_Installer</OutputName>
+    <OutputName>Setup</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -30,6 +30,7 @@
   <ItemGroup>
     <Content Include="CM_Installer.wax" />
     <Content Include="images\Logo_CommandManager_Violet.ico" />
+    <Content Include="License.rtf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CommandManager\CommandManager.csproj">

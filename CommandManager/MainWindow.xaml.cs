@@ -52,6 +52,10 @@ namespace CommandManager
             {
                 // Error in XML file
             }
+            catch (UnauthorizedAccessException)
+            {
+                // Permission Denied
+            }
             ShowHints = false;
         }
 
@@ -61,7 +65,7 @@ namespace CommandManager
         private XmlSerializer xmlS = new XmlSerializer(typeof(ObservableCollection<Command>));
         private string filenameDefault = "Autosave.xml";
         private string filenameCustom = "Commands.xml";
-        private string pathDirectory = Directory.GetCurrentDirectory();
+        private string pathDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\Command Manager";
         private string pathFullDefault;
         private string pathFullCustom;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -185,6 +189,15 @@ namespace CommandManager
             }
         }
 
+        public void ShowUniversalDialog_PermissionDenied()
+        {
+            List<BtnData> buttons = new List<BtnData>() { new BtnData("OK", "btn-primary", true) };
+            DialogUniversal dlg = new DialogUniversal("Permission Denied! Try running as administrator\n\nCould not save to " + pathFullDefault, "Save Error", buttons, this);
+            dlg.Height = 250;
+            dlg.Width = 350;
+            dlg.ShowDialog();
+        }
+
         private void InitSocialMedia()
         {
             string linkTwitter = "https://twitter.com/Rhatalin";
@@ -242,6 +255,10 @@ namespace CommandManager
                     dlg.Width = 280;
                     dlg.ShowDialog();
                 }
+                catch (UnauthorizedAccessException)
+                {
+                    ShowUniversalDialog_PermissionDenied();
+                }
             }
         }
 
@@ -255,7 +272,14 @@ namespace CommandManager
             saveDlg.AddExtension = true;
             if (saveDlg.ShowDialog() == true)
             {
-                SaveXML(saveDlg.FileName);
+                try
+                {
+                    SaveXML(saveDlg.FileName);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    ShowUniversalDialog_PermissionDenied();
+                }
             }
 
         }
@@ -281,7 +305,15 @@ namespace CommandManager
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            SaveXML(pathFullDefault);
+            Directory.CreateDirectory(pathDirectory);
+            try
+            {
+                SaveXML(pathFullDefault);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                ShowUniversalDialog_PermissionDenied();
+            }
         }
 
         private void Btn_Up_Click(object sender, RoutedEventArgs e)
