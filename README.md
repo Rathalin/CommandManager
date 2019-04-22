@@ -7,15 +7,13 @@ This application provides more organisation with visual appeal.
 
 ## Usage :wrench:
 
-Simply download the .exe file [here](https://github.com/Rhatalin/CommandManager/releases) and open it.
-I would recommend placing the application in a folder (e.g. "C:\Program Files\CommandManager"
-and creating a shortcut in your Windows start menu.
+Simply download the Setup file [here](https://github.com/Rhatalin/CommandManager/releases) and open it.
 
 ## Demo :desktop_computer:
 
 This is how the Command Manager looks for now:
 
-![demo](https://github.com/Rhatalin/CommandManager/blob/master/CommandManager/images/CommandManager_v1_0.PNG)
+![demo](https://github.com/Rhatalin/CommandManager/blob/master/CommandManager/Images/CommandManager_v1_1.PNG)
 
 ## Contact :card_index:
 
