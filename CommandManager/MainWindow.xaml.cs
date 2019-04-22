@@ -40,6 +40,7 @@ namespace CommandManager
             LB_Commands.ItemsSource = CommandList;
             pathFullDefault = pathDirectory + "\\" + filenameDefault;
             pathFullCustom = pathDirectory + "\\" + filenameCustom;
+            Directory.CreateDirectory(pathDirectory);
             try
             {
                 LoadXML(pathFullDefault);
@@ -272,6 +273,7 @@ namespace CommandManager
             saveDlg.AddExtension = true;
             if (saveDlg.ShowDialog() == true)
             {
+                Directory.CreateDirectory(pathDirectory);
                 try
                 {
                     SaveXML(saveDlg.FileName);
