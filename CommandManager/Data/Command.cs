@@ -22,6 +22,14 @@ namespace CommandManager.Data
             _showOutput = showOutput;
         }
 
+        /*
+        public Command(int id, string name, string description, string script, bool showOutput)
+            :this(name, description, script, showOutput)
+        {
+            ID = id;
+        }
+        */
+
         // Attributes
 
         public event PropertyChangedEventHandler PropertyChanged;

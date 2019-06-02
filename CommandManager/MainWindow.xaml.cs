@@ -64,13 +64,19 @@ namespace CommandManager
 
         public ObservableCollection<Command> CommandList = new ObservableCollection<Command>();
         private XmlSerializer xmlS = new XmlSerializer(typeof(ObservableCollection<Command>));
+
+        private readonly static int stackCapacity = 20;
+        private Stack<CommandChange> RedoStack = new Stack<CommandChange>(stackCapacity);
+        private Stack<CommandChange> UndoStack = new Stack<CommandChange>(stackCapacity);
+
         private string filenameDefault = "Autosave.xml";
         private string filenameCustom = "Commands.xml";
         private string pathDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\Command Manager";
         private string pathFullDefault;
         private string pathFullCustom;
-        public event PropertyChangedEventHandler PropertyChanged;
+
         private int btnLastDoubleClickTimestamp = 0;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private bool _showHints;
         public bool ShowHints
@@ -99,6 +105,28 @@ namespace CommandManager
             {
                 _hintVisibility = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("HintVisibility"));
+            }
+        }
+
+        private bool _undoEnabled = false;
+        public bool UndoEnabled
+        {
+            get { return _undoEnabled; }
+            set
+            {
+                _undoEnabled = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("UndoEnabled"));
+            }
+        }
+
+        private bool _redoEnabled = false;
+        public bool RedoEnabled
+        {
+            get { return _redoEnabled; }
+            set
+            {
+                _redoEnabled = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RedoEnabled"));
             }
         }
 
@@ -208,6 +236,39 @@ namespace CommandManager
             string linkGithub = "https://github.com/Rhatalin";
             Btn_Github.Tag = linkGithub;
             Btn_Github.ToolTip = linkGithub;
+        }
+
+        private void UndoCommand()
+        {
+            if (UndoStack.Count > 0)
+            {
+                //CommandChange lastChange = UndoStack.Pop();
+                //Command currentCommand = GetCommandById(lastCommand.ID);
+
+            }
+            // update undo button
+            if (UndoStack.Count > 0)
+            {
+                UndoEnabled = true;
+            }
+            else
+            {
+                UndoEnabled = false;
+            }
+
+        }
+
+        private void RedoCommand()
+        {
+            // update redo button
+            if (RedoStack.Count > 0)
+            {
+                RedoEnabled = true;
+            }
+            else
+            {
+                RedoEnabled = false;
+            }
         }
 
         // Events
@@ -378,6 +439,16 @@ namespace CommandManager
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             btnLastDoubleClickTimestamp = e.Timestamp; // save double click timestamp
+        }
+
+        private void MI_Undo_Click(object sender, RoutedEventArgs e)
+        {
+            UndoCommand();
+        }
+
+        private void MI_Redo_Click(object sender, RoutedEventArgs e)
+        {
+            RedoCommand();
         }
     }
 }

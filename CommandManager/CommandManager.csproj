@@ -90,6 +90,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Data\Command.cs" />
+    <Compile Include="Data\CommandChange.cs" />
     <Compile Include="Dialogs\DialogCommand.xaml.cs">
       <DependentUpon>DialogCommand.xaml</DependentUpon>
     </Compile>
