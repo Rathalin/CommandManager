@@ -1,25 +1,17 @@
-﻿using Microsoft.Win32;
+﻿using CommandManager.Data;
+using CommandManager.Dialogs;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Xml.Serialization;
-using CommandManager.Data;
-using CommandManager.Dialogs;
 using static CommandManager.Dialogs.DialogUniversal;
 
 namespace CommandManager
@@ -35,6 +27,7 @@ namespace CommandManager
         {
             InitializeComponent();
             DataContext = this;
+            UndoRedoMgr = new UndoRedoManager(this);
             InitSocialMedia();
             CommandList = new ObservableCollection<Command>();
             LB_Commands.ItemsSource = CommandList;
@@ -65,9 +58,8 @@ namespace CommandManager
         public ObservableCollection<Command> CommandList = new ObservableCollection<Command>();
         private XmlSerializer xmlS = new XmlSerializer(typeof(ObservableCollection<Command>));
 
-        private readonly static int stackCapacity = 20;
-        private Stack<CommandChange> RedoStack = new Stack<CommandChange>(stackCapacity);
-        private Stack<CommandChange> UndoStack = new Stack<CommandChange>(stackCapacity);
+        public readonly static int StackCapacity = 20;
+        public UndoRedoManager UndoRedoMgr { get; set; }
 
         private string filenameDefault = "Autosave.xml";
         private string filenameCustom = "Commands.xml";
@@ -105,28 +97,6 @@ namespace CommandManager
             {
                 _hintVisibility = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("HintVisibility"));
-            }
-        }
-
-        private bool _undoEnabled = false;
-        public bool UndoEnabled
-        {
-            get { return _undoEnabled; }
-            set
-            {
-                _undoEnabled = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("UndoEnabled"));
-            }
-        }
-
-        private bool _redoEnabled = false;
-        public bool RedoEnabled
-        {
-            get { return _redoEnabled; }
-            set
-            {
-                _redoEnabled = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("RedoEnabled"));
             }
         }
 
@@ -170,6 +140,17 @@ namespace CommandManager
             process.Start();
         }
 
+        private void InitSocialMedia()
+        {
+            string linkTwitter = "https://twitter.com/Rhatalin";
+            Btn_Twitter.Tag = linkTwitter;
+            Btn_Twitter.ToolTip = linkTwitter;
+
+            string linkGithub = "https://github.com/Rhatalin";
+            Btn_Github.Tag = linkGithub;
+            Btn_Github.ToolTip = linkGithub;
+        }
+
         public Command GetCommandById(int id)
         {
             foreach (Command c in CommandList)
@@ -194,14 +175,21 @@ namespace CommandManager
             {
                 CommandList.Add(dlg.Command);
                 LB_Commands.SelectedItem = dlg.Command;
-
+                UndoRedoMgr.PushUndo(new CommandChange(CommandAction.Create, Command.CreateCopy(dlg.Command), CommandList.IndexOf(dlg.Command)));
+                
             }
         }
 
         public void ShowCommandDialog_Edit(Command cmd)
         {
+            // save values to detect changes
+            Command oldCommand = Command.CreateCopy(cmd);
             DialogCommand dlg = new DialogCommand("Edit", cmd, this);
             dlg.ShowDialog();
+            if (!dlg.Command.Equals(oldCommand)) // command was changed in dialog
+            {
+                UndoRedoMgr.PushUndo(new CommandChange(CommandAction.Update, Command.CreateCopy(oldCommand), CommandList.IndexOf(cmd)));
+            }
         }
 
         public void ShowCommandDialog_Remove(Command c)
@@ -214,6 +202,7 @@ namespace CommandManager
             dlg.Width = 350;
             if (dlg.ShowDialog() == true)
             {
+                UndoRedoMgr.PushUndo(new CommandChange(CommandAction.Delete, Command.CreateCopy(c), CommandList.IndexOf(c)));
                 CommandList.Remove(c);
             }
         }
@@ -225,50 +214,6 @@ namespace CommandManager
             dlg.Height = 250;
             dlg.Width = 350;
             dlg.ShowDialog();
-        }
-
-        private void InitSocialMedia()
-        {
-            string linkTwitter = "https://twitter.com/Rhatalin";
-            Btn_Twitter.Tag = linkTwitter;
-            Btn_Twitter.ToolTip = linkTwitter;
-
-            string linkGithub = "https://github.com/Rhatalin";
-            Btn_Github.Tag = linkGithub;
-            Btn_Github.ToolTip = linkGithub;
-        }
-
-        private void UndoCommand()
-        {
-            if (UndoStack.Count > 0)
-            {
-                //CommandChange lastChange = UndoStack.Pop();
-                //Command currentCommand = GetCommandById(lastCommand.ID);
-
-            }
-            // update undo button
-            if (UndoStack.Count > 0)
-            {
-                UndoEnabled = true;
-            }
-            else
-            {
-                UndoEnabled = false;
-            }
-
-        }
-
-        private void RedoCommand()
-        {
-            // update redo button
-            if (RedoStack.Count > 0)
-            {
-                RedoEnabled = true;
-            }
-            else
-            {
-                RedoEnabled = false;
-            }
         }
 
         // Events
@@ -351,12 +296,12 @@ namespace CommandManager
         {
             Command c = GetCommandByButton((Button)sender);
             ShowCommandDialog_Edit(c);
-
         }
 
         private void Btn_Remove_Click(object sender, RoutedEventArgs e)
         {
             Command c = GetCommandByButton((Button)sender);
+            UndoRedoMgr.PushUndo(new CommandChange(CommandAction.Delete, Command.CreateCopy(c), CommandList.IndexOf(c)));
             CommandList.Remove(c);
         }
 
@@ -443,12 +388,12 @@ namespace CommandManager
 
         private void MI_Undo_Click(object sender, RoutedEventArgs e)
         {
-            UndoCommand();
+            UndoRedoMgr.UndoCommand();
         }
 
         private void MI_Redo_Click(object sender, RoutedEventArgs e)
         {
-            RedoCommand();
+            UndoRedoMgr.RedoCommand();
         }
     }
 }
