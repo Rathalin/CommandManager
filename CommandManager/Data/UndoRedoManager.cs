@@ -91,12 +91,10 @@ namespace CommandManager.Data
                     case CommandAction.Create:
                         window.CommandList.Remove(affectedCommand);
                         RedoStack.Push(new CommandChange(CommandAction.Create, affectedCommand, lastChange.LastIndex));
-                        RedoEnabled = RedoStack.Count > 0;
                         window.LB_Commands.SelectedItem = lastChange.Command;
                         break;
                     case CommandAction.Update:
                         RedoStack.Push(new CommandChange(CommandAction.Update, Command.CreateCopy(affectedCommand), lastChange.LastIndex));
-                        RedoEnabled = RedoStack.Count > 0;
                         affectedCommand.Name = lastChange.Command.Name;
                         affectedCommand.Description = lastChange.Command.Description;
                         affectedCommand.Script = lastChange.Command.Script;
@@ -105,17 +103,23 @@ namespace CommandManager.Data
                     case CommandAction.Delete:
                         window.CommandList.Insert(lastChange.LastIndex, lastChange.Command);
                         RedoStack.Push(new CommandChange(CommandAction.Delete, lastChange.Command, lastChange.LastIndex));
-                        RedoEnabled = RedoStack.Count > 0;
                         window.LB_Commands.SelectedItem = lastChange.Command;
                         window.LB_Commands.UpdateLayout();
                         break;
                     case CommandAction.MoveUp:
-
+                        window.Command_MoveDown(lastChange.Command);
+                        RedoStack.Push(new CommandChange(CommandAction.MoveUp, lastChange.Command, lastChange.LastIndex));
                         break;
                     case CommandAction.MoveDown:
-
+                        window.Command_MoveUp(lastChange.Command);
+                        RedoStack.Push(new CommandChange(CommandAction.MoveDown, lastChange.Command, lastChange.LastIndex));
+                        break;
+                    case CommandAction.ChangeOutputState:
+                        lastChange.Command.ShowOutput = !lastChange.Command.ShowOutput;
+                        RedoStack.Push(new CommandChange(CommandAction.ChangeOutputState, lastChange.Command, lastChange.LastIndex));
                         break;
                 }
+                RedoEnabled = RedoStack.Count > 0;
             }
             // update undo button
             UndoEnabled = UndoStack.Count > 0;
@@ -132,12 +136,10 @@ namespace CommandManager.Data
                     case CommandAction.Create:
                         window.CommandList.Insert(lastChange.LastIndex, lastChange.Command);
                         UndoStack.Push(new CommandChange(CommandAction.Create, lastChange.Command, lastChange.LastIndex));
-                        UndoEnabled = UndoStack.Count > 0;
                         window.LB_Commands.SelectedItem = lastChange.Command;
                         break;
                     case CommandAction.Update:
                         UndoStack.Push(new CommandChange(CommandAction.Update, Command.CreateCopy(affectedCommand), lastChange.LastIndex));
-                        UndoEnabled = UndoStack.Count > 0;
                         affectedCommand.Name = lastChange.Command.Name;
                         affectedCommand.Description = lastChange.Command.Description;
                         affectedCommand.Script = lastChange.Command.Script;
@@ -146,16 +148,24 @@ namespace CommandManager.Data
                     case CommandAction.Delete:
                         window.CommandList.Remove(affectedCommand);
                         UndoStack.Push(new CommandChange(CommandAction.Delete, affectedCommand, lastChange.LastIndex));
-                        UndoEnabled = UndoStack.Count > 0;
                         window.LB_Commands.SelectedItem = lastChange.Command;
                         break;
                     case CommandAction.MoveUp:
-
+                        window.Command_MoveUp(lastChange.Command);
+                        UndoStack.Push(new CommandChange(CommandAction.MoveUp, lastChange.Command, lastChange.LastIndex));
+                        window.LB_Commands.SelectedItem = lastChange.Command;
                         break;
                     case CommandAction.MoveDown:
-
+                        window.Command_MoveDown(lastChange.Command);
+                        UndoStack.Push(new CommandChange(CommandAction.MoveDown, lastChange.Command, lastChange.LastIndex));
+                        window.LB_Commands.SelectedItem = lastChange.Command;
+                        break;
+                    case CommandAction.ChangeOutputState:
+                        lastChange.Command.ShowOutput = !lastChange.Command.ShowOutput;
+                        UndoStack.Push(new CommandChange(CommandAction.ChangeOutputState, lastChange.Command, lastChange.LastIndex));
                         break;
                 }
+                UndoEnabled = UndoStack.Count > 0;
             }
             // update redo button
             RedoEnabled = RedoStack.Count > 0;

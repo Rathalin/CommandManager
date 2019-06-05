@@ -26,6 +26,6 @@ namespace CommandManager.Data
 
     public enum CommandAction
     {
-        Create, Update, Delete, MoveUp, MoveDown
+        Create, Update, Delete, MoveUp, MoveDown, ChangeOutputState
     }
 }

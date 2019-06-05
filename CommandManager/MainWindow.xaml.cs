@@ -216,6 +216,48 @@ namespace CommandManager
             dlg.ShowDialog();
         }
 
+        public bool Command_MoveUp(Command c)
+        {
+            bool couldMove;
+            int indexOld = CommandList.IndexOf(c);
+            int indexNew = indexOld - 1;
+            if (indexOld > 0)
+            {
+                Command swap = CommandList[indexNew];
+                CommandList[indexNew] = c;
+                CommandList[indexOld] = swap;
+                LB_Commands.SelectedIndex = indexNew; //visual improvemend
+                couldMove = true;
+            }
+            else
+            {
+                LB_Commands.SelectedIndex = indexOld; //visual improvemend
+                couldMove = false;
+            }
+            return couldMove;
+        }
+
+        public bool Command_MoveDown(Command c)
+        {
+            bool couldMove;
+            int indexOld = CommandList.IndexOf(c);
+            int indexNew = indexOld + 1;
+            if (indexOld < CommandList.Count - 1)
+            {
+                Command swap = CommandList[indexNew];
+                CommandList[indexNew] = c;
+                CommandList[indexOld] = swap;
+                LB_Commands.SelectedIndex = indexNew; //visual improvemend
+                couldMove = true;
+            }
+            else
+            {
+                LB_Commands.SelectedIndex = indexOld; //visual improvemend
+                couldMove = false;
+            }
+            return couldMove;
+        }
+
         // Events
 
         private void Btn_AddCmd_Click(object sender, RoutedEventArgs e)
@@ -328,38 +370,16 @@ namespace CommandManager
         {
             int id = (int)((Button)sender).Tag;
             Command c = GetCommandById(id);
-            int indexOld = CommandList.IndexOf(c);
-            int indexNew = indexOld - 1;
-            if (indexOld > 0)
-            {
-                Command swap = CommandList[indexNew];
-                CommandList[indexNew] = c;
-                CommandList[indexOld] = swap;
-                LB_Commands.SelectedIndex = indexNew; //visual improvemend
-            }
-            else
-            {
-                LB_Commands.SelectedIndex = indexOld; //visual improvemend
-            }
+            Command_MoveUp(c);
+            UndoRedoMgr.PushUndo(new CommandChange(CommandAction.MoveUp, c, CommandList.IndexOf(c)));
         }
 
         private void Btn_Down_Click(object sender, RoutedEventArgs e)
         {
             int id = (int)((Button)sender).Tag;
             Command c = GetCommandById(id);
-            int indexOld = CommandList.IndexOf(c);
-            int indNew = indexOld + 1;
-            if (indexOld < CommandList.Count - 1)
-            {
-                Command swap = CommandList[indNew];
-                CommandList[indNew] = c;
-                CommandList[indexOld] = swap;
-                LB_Commands.SelectedIndex = indNew; //visual improvemend
-            }
-            else
-            {
-                LB_Commands.SelectedIndex = indexOld; //visual improvemend
-            }
+            Command_MoveDown(c);
+            UndoRedoMgr.PushUndo(new CommandChange(CommandAction.MoveDown, c, CommandList.IndexOf(c)));
         }
 
         private void G_Wrapping_PreviwMouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -377,8 +397,9 @@ namespace CommandManager
         private void Btn_OutputState_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
-            Command cmd = GetCommandById((int)btn.Tag);
-            cmd.ShowOutput = !cmd.ShowOutput;
+            Command c = GetCommandById((int)btn.Tag);
+            UndoRedoMgr.PushUndo(new CommandChange(CommandAction.ChangeOutputState, c, CommandList.IndexOf(c)));
+            c.ShowOutput = !c.ShowOutput;
         }
 
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
