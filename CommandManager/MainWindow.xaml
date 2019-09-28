@@ -64,14 +64,14 @@
             </StackPanel>
             <Button x:Name="Btn_AddCmd" Content="Add" Click="Btn_AddCmd_Click" Style="{StaticResource btn-secondary}" MinWidth="100"></Button>
         </DockPanel>
-        <!-- <TabControl x:Name="TabControl_CommandGroups" SelectionChanged="TabControl_CommandGroups_SelectionChanged">
+        <TabControl x:Name="TabControl_CommandGroups" SelectionChanged="TabControl_CommandGroups_SelectionChanged">
             <TabControl.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="Default" />
                 </DataTemplate>
             </TabControl.ItemTemplate>
             <TabControl.ContentTemplate>
-                <DataTemplate> -->
+                <DataTemplate>
                     <ListBox DataContext="{Binding Path=CommandGroup.CommandList}" ItemsSource="{Binding}" HorizontalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True" IsTextSearchEnabled="True" SelectionMode="Single"
                             ScrollViewer.VerticalScrollBarVisibility="Visible" MouseDoubleClick="LB_Commands_MouseDoubleClick">
                         <ListBox.ItemTemplate>
@@ -106,10 +106,8 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-        <!--
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-    -->
     </DockPanel>
 </Window>

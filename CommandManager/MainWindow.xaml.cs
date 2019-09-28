@@ -30,7 +30,8 @@ namespace CommandManager
             DataContext = this;
             UndoRedoMgr = new UndoRedoManager(this);
             InitSocialMedia();
-            //SelectedListBox.ItemsSource = CommandList;
+            SelectedListBox.ItemsSource = CommandList;
+
             Testcontent();
             pathFullDefault = pathDirectory + "\\" + filenameDefault;
             pathFullCustom = pathDirectory + "\\" + filenameCustom;
@@ -286,46 +287,6 @@ namespace CommandManager
             return couldMove;
         }
 
-        public void Animate_Execution(Button senderBtn)
-        {
-            // Create a LinearGradientBrush to paint
-            // the rectangle's fill.
-            LinearGradientBrush brush = new LinearGradientBrush();
-
-            // Create gradient stops for the brush.
-            GradientStop stop1 = new GradientStop(Colors.MediumBlue, 0.0);
-            GradientStop stop2 = new GradientStop(Colors.Purple, 0.5);
-            GradientStop stop3 = new GradientStop(Colors.Red, 1.0);
-
-            // Register a name for each gradient stop with the
-            // page so that they can be animated by a storyboard.
-            RegisterName("GradientStop1", stop1);
-            RegisterName("GradientStop2", stop2);
-            RegisterName("GradientStop3", stop3);
-
-            // Add the stops to the brush.
-            brush.GradientStops.Add(stop1);
-            brush.GradientStops.Add(stop2);
-            brush.GradientStops.Add(stop3);
-
-            // Apply the brush to the rectangle.
-            senderBtn.Background = brush;
-
-            // Animate the first gradient stop's offset from
-            // 0.0 to 1.0 and then back to 0.0.
-            //
-            DoubleAnimation offsetAnimation = new DoubleAnimation();
-            offsetAnimation.From = 0.0;
-            offsetAnimation.To = 1.0;
-            offsetAnimation.Duration = TimeSpan.FromSeconds(1.5);
-            offsetAnimation.AutoReverse = true;
-            Storyboard.SetTargetName(offsetAnimation, "GradientStop1");
-            Storyboard.SetTargetProperty(offsetAnimation,
-                new PropertyPath(GradientStop.OffsetProperty));
-
-
-        }
-
         // Events
 
         private void Btn_AddCmd_Click(object sender, RoutedEventArgs e)
@@ -435,8 +396,7 @@ namespace CommandManager
         {
             Button btn = (Button)sender;
             Command c = GetCommandByButton(btn);
-            Animate_Execution(btn);
-            //ExecuteScript(c);
+            ExecuteScript(c);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
