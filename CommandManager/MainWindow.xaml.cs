@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Xml.Serialization;
 using static CommandManager.Dialogs.DialogUniversal;
 
@@ -29,8 +30,8 @@ namespace CommandManager
             DataContext = this;
             UndoRedoMgr = new UndoRedoManager(this);
             InitSocialMedia();
-            CommandList = new ObservableCollection<Command>();
-            LB_Commands.ItemsSource = CommandList;
+            //SelectedListBox.ItemsSource = CommandList;
+            Testcontent();
             pathFullDefault = pathDirectory + "\\" + filenameDefault;
             pathFullCustom = pathDirectory + "\\" + filenameCustom;
             Directory.CreateDirectory(pathDirectory);
@@ -55,7 +56,9 @@ namespace CommandManager
 
         // Variables and Attributes
 
+        public ObservableCollection<CommandGroup> CommandGroups = new ObservableCollection<CommandGroup>();
         public ObservableCollection<Command> CommandList = new ObservableCollection<Command>();
+        public ListBox SelectedListBox = new ListBox();
         private XmlSerializer xmlS = new XmlSerializer(typeof(ObservableCollection<Command>));
 
         public readonly static int StackCapacity = 20;
@@ -102,12 +105,37 @@ namespace CommandManager
 
         // Methodes
 
+        private void Testcontent()
+        {
+
+            CommandGroups.Add(new CommandGroup()
+            {
+                CommandList = new ObservableCollection<Command>()
+                {
+                    new Command("Command One", "Exampledesc 1", "", false),
+                    new Command("Command Two", "Exampledesc 2", "", true),
+                    new Command("Command Three", "Exampledesc 3", "", false)
+                },
+                Name = "Group1"
+            });
+            CommandGroups.Add(new CommandGroup()
+            {
+                CommandList = new ObservableCollection<Command>()
+                {
+                    new Command("Command One :)", "Exampledesc 1", "", false),
+                    new Command("Command Two :=)", "Exampledesc 2", "", true),
+                    new Command("Command Three :(", "Exampledesc 3", "", false)
+                },
+                Name = "Group2"
+            });
+        }
+
         public void LoadXML(string path)
         {
             var reader = new StreamReader(path);
             CommandList = (ObservableCollection<Command>)xmlS.Deserialize(reader);
             reader.Close();
-            LB_Commands.ItemsSource = CommandList;
+            SelectedListBox.ItemsSource = CommandList;
         }
 
         public void SaveXML(string path)
@@ -164,7 +192,7 @@ namespace CommandManager
         public Command GetCommandByButton(Button btn)
         {
             int id = (int)btn.Tag;
-            LB_Commands.SelectedIndex = id; //visual improvemend
+            SelectedListBox.SelectedIndex = id; //visual improvemend
             return GetCommandById(id);
         }
 
@@ -174,7 +202,7 @@ namespace CommandManager
             if (dlg.ShowDialog() == true)
             {
                 CommandList.Add(dlg.Command);
-                LB_Commands.SelectedItem = dlg.Command;
+                SelectedListBox.SelectedItem = dlg.Command;
                 UndoRedoMgr.PushUndo(new CommandChange(CommandAction.Create, Command.CreateCopy(dlg.Command), CommandList.IndexOf(dlg.Command)));
                 
             }
@@ -226,12 +254,12 @@ namespace CommandManager
                 Command swap = CommandList[indexNew];
                 CommandList[indexNew] = c;
                 CommandList[indexOld] = swap;
-                LB_Commands.SelectedIndex = indexNew; //visual improvemend
+                SelectedListBox.SelectedIndex = indexNew; //visual improvemend
                 couldMove = true;
             }
             else
             {
-                LB_Commands.SelectedIndex = indexOld; //visual improvemend
+                SelectedListBox.SelectedIndex = indexOld; //visual improvemend
                 couldMove = false;
             }
             return couldMove;
@@ -247,15 +275,55 @@ namespace CommandManager
                 Command swap = CommandList[indexNew];
                 CommandList[indexNew] = c;
                 CommandList[indexOld] = swap;
-                LB_Commands.SelectedIndex = indexNew; //visual improvemend
+                SelectedListBox.SelectedIndex = indexNew; //visual improvemend
                 couldMove = true;
             }
             else
             {
-                LB_Commands.SelectedIndex = indexOld; //visual improvemend
+                SelectedListBox.SelectedIndex = indexOld; //visual improvemend
                 couldMove = false;
             }
             return couldMove;
+        }
+
+        public void Animate_Execution(Button senderBtn)
+        {
+            // Create a LinearGradientBrush to paint
+            // the rectangle's fill.
+            LinearGradientBrush brush = new LinearGradientBrush();
+
+            // Create gradient stops for the brush.
+            GradientStop stop1 = new GradientStop(Colors.MediumBlue, 0.0);
+            GradientStop stop2 = new GradientStop(Colors.Purple, 0.5);
+            GradientStop stop3 = new GradientStop(Colors.Red, 1.0);
+
+            // Register a name for each gradient stop with the
+            // page so that they can be animated by a storyboard.
+            RegisterName("GradientStop1", stop1);
+            RegisterName("GradientStop2", stop2);
+            RegisterName("GradientStop3", stop3);
+
+            // Add the stops to the brush.
+            brush.GradientStops.Add(stop1);
+            brush.GradientStops.Add(stop2);
+            brush.GradientStops.Add(stop3);
+
+            // Apply the brush to the rectangle.
+            senderBtn.Background = brush;
+
+            // Animate the first gradient stop's offset from
+            // 0.0 to 1.0 and then back to 0.0.
+            //
+            DoubleAnimation offsetAnimation = new DoubleAnimation();
+            offsetAnimation.From = 0.0;
+            offsetAnimation.To = 1.0;
+            offsetAnimation.Duration = TimeSpan.FromSeconds(1.5);
+            offsetAnimation.AutoReverse = true;
+            Storyboard.SetTargetName(offsetAnimation, "GradientStop1");
+            Storyboard.SetTargetProperty(offsetAnimation,
+                new PropertyPath(GradientStop.OffsetProperty));
+
+
         }
 
         // Events
@@ -265,13 +333,29 @@ namespace CommandManager
             ShowCommandDialog_Add();
         }
 
+        private void SelectedListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (btnLastDoubleClickTimestamp != e.Timestamp) // check if last double click was from a button
+            {
+                if (VisualTreeHelper.HitTest(this, e.GetPosition(this)).VisualHit.GetType() != typeof(ScrollViewer)) // double click on listboxitem
+                {
+                    Command cmd = (Command)SelectedListBox.SelectedItem;
+                    ShowCommandDialog_Edit(cmd);
+                }
+                else // double click on empty space in listbox
+                {
+                    ShowCommandDialog_Add();
+                }
+            }
+        }
+
         private void LB_Commands_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (btnLastDoubleClickTimestamp != e.Timestamp) // check if last double click was from a button
             {
                 if (VisualTreeHelper.HitTest(this, e.GetPosition(this)).VisualHit.GetType() != typeof(ScrollViewer)) // double click on listboxitem
                 {
-                    Command cmd = (Command)LB_Commands.SelectedItem;
+                    Command cmd = (Command)SelectedListBox.SelectedItem;
                     ShowCommandDialog_Edit(cmd);
                 }
                 else // double click on empty space in listbox
@@ -349,8 +433,10 @@ namespace CommandManager
 
         private void Btn_Execute_Click(object sender, RoutedEventArgs e)
         {
-            Command c = GetCommandByButton((Button)sender);
-            ExecuteScript(c);
+            Button btn = (Button)sender;
+            Command c = GetCommandByButton(btn);
+            Animate_Execution(btn);
+            //ExecuteScript(c);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -415,6 +501,11 @@ namespace CommandManager
         private void MI_Redo_Click(object sender, RoutedEventArgs e)
         {
             UndoRedoMgr.RedoCommand();
+        }
+
+        private void TabControl_CommandGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MessageBox.Show(sender.GetType().ToString());
         }
     }
 }

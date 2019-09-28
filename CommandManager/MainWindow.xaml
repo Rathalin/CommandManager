@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CommandManager"
-        xmlns:local_data="clr-namespace:CommandManager.Data"
+        xmlns:data="clr-namespace:CommandManager.Data"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" 
         Closing="Window_Closing"
         Title="Command Manager" Height="600" Width="800" MinHeight="350" MinWidth="450">
@@ -64,39 +64,52 @@
             </StackPanel>
             <Button x:Name="Btn_AddCmd" Content="Add" Click="Btn_AddCmd_Click" Style="{StaticResource btn-secondary}" MinWidth="100"></Button>
         </DockPanel>
-        <ListBox x:Name="LB_Commands" HorizontalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True" IsTextSearchEnabled="True" SelectionMode="Single"
-                 ScrollViewer.VerticalScrollBarVisibility="Visible" MouseDoubleClick="LB_Commands_MouseDoubleClick">
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type local_data:Command}">
-                    <Grid x:Name="G_Wrapping" Tag="{Binding Path=ID}" PreviewMouseRightButtonDown="G_Wrapping_PreviwMouseRightButtonDown" Background="Transparent">
-                        <GroupBox Tag="{Binding Path=ID}">
-                            <GroupBox.Header>
-                                <TextBlock Text="{Binding Path=Name}" FontSize="14" FontWeight="SemiBold" Grid.Column="0" Grid.Row="0" Margin="0 0 10 0"></TextBlock>
-                            </GroupBox.Header>
-                            <DockPanel>
-                                <DockPanel DockPanel.Dock="Top">
-                                    <Button Content="Execute" DockPanel.Dock="Right" Style="{StaticResource btn-primary}" Click="Btn_Execute_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
-                                    <Button x:Name="Btn_ShowOutput" Content="Output" DockPanel.Dock="Right" Click="Btn_OutputState_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
-                                    <Button Content="Delete" DockPanel.Dock="Right" Style="{StaticResource btn-outline-danger}" Click="Btn_Remove_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
-                                    <Button Content="Edit" DockPanel.Dock="Right" Style="{StaticResource btn-outline-warning}" Click="Btn_Edit_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
-                                    <Button Content="Up" DockPanel.Dock="Right" Style="{StaticResource btn-outline-secondary}" Click="Btn_Up_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
-                                    <Button Content="Down" DockPanel.Dock="Right" Style="{StaticResource btn-outline-secondary}" Click="Btn_Down_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
-                                    <TextBlock Text="{Binding Path=Description}" Grid.Column="1" Grid.Row="0" Padding="5" FontStyle="Italic"></TextBlock>
-                                </DockPanel>
-                                <TextBlock Text="{Binding Path=ScriptPreview}" FontFamily="Consolas" Foreground="Gray"></TextBlock>
-                            </DockPanel>
-                        </GroupBox>
-                    </Grid>
-                    <DataTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Path=ShowOutput}" Value="True">
-                            <Setter TargetName="Btn_ShowOutput" Property="Style" Value="{StaticResource btn-dark}"></Setter>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Path=ShowOutput}" Value="False">
-                            <Setter TargetName="Btn_ShowOutput" Property="Style" Value="{StaticResource btn-outline-secondary}"></Setter>
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
+        <!-- <TabControl x:Name="TabControl_CommandGroups" SelectionChanged="TabControl_CommandGroups_SelectionChanged">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="Default" />
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate> -->
+                    <ListBox DataContext="{Binding Path=CommandGroup.CommandList}" ItemsSource="{Binding}" HorizontalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True" IsTextSearchEnabled="True" SelectionMode="Single"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible" MouseDoubleClick="LB_Commands_MouseDoubleClick">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type data:Command}">
+                                <Grid x:Name="G_Wrapping" Tag="{Binding Path=ID}" PreviewMouseRightButtonDown="G_Wrapping_PreviwMouseRightButtonDown" Background="Transparent">
+                                    <GroupBox Tag="{Binding Path=ID}">
+                                        <GroupBox.Header>
+                                            <TextBlock Text="{Binding Path=Name}" FontSize="14" FontWeight="SemiBold" Grid.Column="0" Grid.Row="0" Margin="0 0 10 0"></TextBlock>
+                                        </GroupBox.Header>
+                                        <DockPanel>
+                                            <DockPanel DockPanel.Dock="Top">
+                                                <Button Content="Execute" DockPanel.Dock="Right" Style="{StaticResource btn-primary}" Click="Btn_Execute_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                                <Button x:Name="Btn_ShowOutput" Content="Output" DockPanel.Dock="Right" Click="Btn_OutputState_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                                <Button Content="Delete" DockPanel.Dock="Right" Style="{StaticResource btn-outline-danger}" Click="Btn_Remove_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                                <Button Content="Edit" DockPanel.Dock="Right" Style="{StaticResource btn-outline-warning}" Click="Btn_Edit_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                                <Button Content="Up" DockPanel.Dock="Right" Style="{StaticResource btn-outline-secondary}" Click="Btn_Up_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                                <Button Content="Down" DockPanel.Dock="Right" Style="{StaticResource btn-outline-secondary}" Click="Btn_Down_Click" MouseDoubleClick="Button_MouseDoubleClick" Tag="{Binding Path=ID}"></Button>
+                                                <TextBlock Text="{Binding Path=Description}" Grid.Column="1" Grid.Row="0" Padding="5" FontStyle="Italic"></TextBlock>
+                                            </DockPanel>
+                                            <TextBlock Text="{Binding Path=ScriptPreview}" FontFamily="Consolas" Foreground="Gray"></TextBlock>
+                                        </DockPanel>
+                                    </GroupBox>
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Path=ShowOutput}" Value="True">
+                                        <Setter TargetName="Btn_ShowOutput" Property="Style" Value="{StaticResource btn-dark}"></Setter>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=ShowOutput}" Value="False">
+                                        <Setter TargetName="Btn_ShowOutput" Property="Style" Value="{StaticResource btn-outline-secondary}"></Setter>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+        <!--
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+        </TabControl>
+    -->
     </DockPanel>
 </Window>

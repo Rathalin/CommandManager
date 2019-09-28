@@ -89,6 +89,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Data\CommandGroup.cs" />
     <Compile Include="Data\UndoRedoManager.cs" />
     <Compile Include="Data\Command.cs" />
     <Compile Include="Data\CommandChange.cs" />

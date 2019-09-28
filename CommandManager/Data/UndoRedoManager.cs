@@ -91,20 +91,20 @@ namespace CommandManager.Data
                     case CommandAction.Create:
                         window.CommandList.Remove(affectedCommand);
                         RedoStack.Push(new CommandChange(CommandAction.Create, affectedCommand, lastChange.LastIndex));
-                        window.LB_Commands.SelectedItem = lastChange.Command;
+                        window.SelectedListBox.SelectedItem = lastChange.Command;
                         break;
                     case CommandAction.Update:
                         RedoStack.Push(new CommandChange(CommandAction.Update, Command.CreateCopy(affectedCommand), lastChange.LastIndex));
                         affectedCommand.Name = lastChange.Command.Name;
                         affectedCommand.Description = lastChange.Command.Description;
                         affectedCommand.Script = lastChange.Command.Script;
-                        window.LB_Commands.SelectedItem = affectedCommand;
+                        window.SelectedListBox.SelectedItem = affectedCommand;
                         break;
                     case CommandAction.Delete:
                         window.CommandList.Insert(lastChange.LastIndex, lastChange.Command);
                         RedoStack.Push(new CommandChange(CommandAction.Delete, lastChange.Command, lastChange.LastIndex));
-                        window.LB_Commands.SelectedItem = lastChange.Command;
-                        window.LB_Commands.UpdateLayout();
+                        window.SelectedListBox.SelectedItem = lastChange.Command;
+                        window.SelectedListBox.UpdateLayout();
                         break;
                     case CommandAction.MoveUp:
                         window.Command_MoveDown(lastChange.Command);
@@ -136,29 +136,29 @@ namespace CommandManager.Data
                     case CommandAction.Create:
                         window.CommandList.Insert(lastChange.LastIndex, lastChange.Command);
                         UndoStack.Push(new CommandChange(CommandAction.Create, lastChange.Command, lastChange.LastIndex));
-                        window.LB_Commands.SelectedItem = lastChange.Command;
+                        window.SelectedListBox.SelectedItem = lastChange.Command;
                         break;
                     case CommandAction.Update:
                         UndoStack.Push(new CommandChange(CommandAction.Update, Command.CreateCopy(affectedCommand), lastChange.LastIndex));
                         affectedCommand.Name = lastChange.Command.Name;
                         affectedCommand.Description = lastChange.Command.Description;
                         affectedCommand.Script = lastChange.Command.Script;
-                        window.LB_Commands.SelectedItem = affectedCommand;
+                        window.SelectedListBox.SelectedItem = affectedCommand;
                         break;
                     case CommandAction.Delete:
                         window.CommandList.Remove(affectedCommand);
                         UndoStack.Push(new CommandChange(CommandAction.Delete, affectedCommand, lastChange.LastIndex));
-                        window.LB_Commands.SelectedItem = lastChange.Command;
+                        window.SelectedListBox.SelectedItem = lastChange.Command;
                         break;
                     case CommandAction.MoveUp:
                         window.Command_MoveUp(lastChange.Command);
                         UndoStack.Push(new CommandChange(CommandAction.MoveUp, lastChange.Command, lastChange.LastIndex));
-                        window.LB_Commands.SelectedItem = lastChange.Command;
+                        window.SelectedListBox.SelectedItem = lastChange.Command;
                         break;
                     case CommandAction.MoveDown:
                         window.Command_MoveDown(lastChange.Command);
                         UndoStack.Push(new CommandChange(CommandAction.MoveDown, lastChange.Command, lastChange.LastIndex));
-                        window.LB_Commands.SelectedItem = lastChange.Command;
+                        window.SelectedListBox.SelectedItem = lastChange.Command;
                         break;
                     case CommandAction.ChangeOutputState:
                         lastChange.Command.ShowOutput = !lastChange.Command.ShowOutput;
