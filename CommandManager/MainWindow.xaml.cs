@@ -371,12 +371,11 @@ namespace CommandManager
 
             // Set the animation to begin after the first animation
             // ends.
-
-            double x = 0.0;
-            animation1.BeginTime = TimeSpan.FromSeconds(x + 0);
-            animation2.BeginTime = TimeSpan.FromSeconds(x + 0.2);
-            animation3.BeginTime = TimeSpan.FromSeconds(x + 0.3);
-            animation4.BeginTime = TimeSpan.FromSeconds(x + 0.4);
+            double delay = 0.0;
+            animation1.BeginTime = TimeSpan.FromSeconds(delay + 0);
+            animation2.BeginTime = TimeSpan.FromSeconds(delay + 0.2);
+            animation3.BeginTime = TimeSpan.FromSeconds(delay + 0.3);
+            animation4.BeginTime = TimeSpan.FromSeconds(delay + 0.4);
 
 
             // Create a Storyboard to apply the animations.
