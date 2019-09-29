@@ -59,6 +59,8 @@
     <Color x:Key="color-violet" R="86" G="61" B="124" A="255"></Color>
     <SolidColorBrush x:Key="bootstrap-violet" Color="{StaticResource color-violet}"></SolidColorBrush>
 
+    <Color x:Key="listbox-border" R="20" G="160" B="218" A="255"></Color>
+
     <!-- Normal Buttons -->
 
     <Style x:Key="btn-primary" TargetType="Button">
