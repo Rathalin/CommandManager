@@ -22,11 +22,19 @@ namespace CommandManager.Data
             _showOutput = showOutput;
         }
 
+        /*
+        public Command(int id, string name, string description, string script, bool showOutput)
+            :this(name, description, script, showOutput)
+        {
+            ID = id;
+        }
+        */
+
         // Attributes
 
         public event PropertyChangedEventHandler PropertyChanged;
         [XmlIgnore]
-        public int ID { get; } = NextId();
+        public int ID { get; private set; } = NextId();
 
         [XmlIgnore]
         private string _name = "";
@@ -69,19 +77,6 @@ namespace CommandManager.Data
         }
 
         [XmlIgnore]
-        private bool _showOutput = false;
-        [XmlElement(ElementName = "ShowOutput")]
-        public bool ShowOutput
-        {
-            get { return _showOutput; }
-            set
-            {
-                _showOutput = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowOutput"));
-            }
-        }
-
-        [XmlIgnore]
         public string ScriptPreview
         {
             get
@@ -104,18 +99,47 @@ namespace CommandManager.Data
             }
         }
 
+        [XmlIgnore]
+        private bool _showOutput = false;
+        [XmlElement(ElementName = "ShowOutput")]
+        public bool ShowOutput
+        {
+            get { return _showOutput; }
+            set
+            {
+                _showOutput = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ShowOutput"));
+            }
+        }
+
         private static int id = 0;
 
         // Methodes
-
+        
         public override string ToString()
         {
             return string.Format("CommandBlock : {{\n\tName : \"{0}\"\n\tDescription : \"{1}\"\n\tCommand : \"{2}\"\n}}", _name, _desc, _script);
         }
 
+        public bool Equals(Command c)
+        {
+            return ID.Equals(c.ID) && Name.Equals(c.Name) && Description.Equals(c.Description) && Script.Equals(c.Script) && ShowOutput.Equals(c.ShowOutput);
+        }
+
         public static int NextId()
         {
             return id++;
+        }
+
+        public static Command CreateCopy(Command cmd)
+        {
+            Command c = new Command();
+            c.ID = cmd.ID;
+            c._name = cmd.Name;
+            c._desc = cmd.Description;
+            c._script = cmd.Script;
+            c._showOutput = cmd.ShowOutput;
+            return c;
         }
     }
 }

@@ -15,6 +15,8 @@
                 <Menu Background="Transparent" BorderThickness="0" Foreground="White">
                     <MenuItem x:Name="MI_Import" Header="Import" Click="MI_Import_Click" Padding="10"></MenuItem>
                     <MenuItem x:Name="MI_Export" Header="Export" Click="MI_Export_Click" Padding="10"></MenuItem>
+                    <MenuItem x:Name="MI_Undo" Header="Undo" Click="MI_Undo_Click" IsEnabled="{Binding Path=UndoRedoMgr.UndoEnabled}" Padding="10"></MenuItem>
+                    <MenuItem x:Name="MI_Redo" Header="Redo" Click="MI_Redo_Click" IsEnabled="{Binding Path=UndoRedoMgr.RedoEnabled}" Padding="10"></MenuItem>
                 </Menu>
             </DockPanel>
         </Border>
@@ -63,7 +65,7 @@
             <Button x:Name="Btn_AddCmd" Content="Add" Click="Btn_AddCmd_Click" Style="{StaticResource btn-secondary}" MinWidth="100"></Button>
         </DockPanel>
         <ListBox x:Name="LB_Commands" HorizontalContentAlignment="Stretch" IsSynchronizedWithCurrentItem="True" IsTextSearchEnabled="True" SelectionMode="Single"
-                 ScrollViewer.VerticalScrollBarVisibility="Visible" MouseDoubleClick="LB_Commands_MouseDoubleClick">
+                 ScrollViewer.VerticalScrollBarVisibility="Visible" MouseDoubleClick="LB_Commands_MouseDoubleClick" Background="White" OpacityMask="Black" >
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type local_data:Command}">
                     <Grid x:Name="G_Wrapping" Tag="{Binding Path=ID}" PreviewMouseRightButtonDown="G_Wrapping_PreviwMouseRightButtonDown" Background="Transparent">

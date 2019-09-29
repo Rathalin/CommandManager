@@ -1,25 +1,18 @@
-﻿using Microsoft.Win32;
+﻿using CommandManager.Data;
+using CommandManager.Dialogs;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 using System.Xml.Serialization;
-using CommandManager.Data;
-using CommandManager.Dialogs;
 using static CommandManager.Dialogs.DialogUniversal;
 
 namespace CommandManager
@@ -29,18 +22,31 @@ namespace CommandManager
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        // Constructors
+        #region Constructors
 
         public MainWindow()
         {
             InitializeComponent();
             DataContext = this;
+
+            // Init Undo Redo Management
+            UndoRedoMgr = new UndoRedoManager(this);
+
+            // Init Social Media Buttons
             InitSocialMedia();
+
+            // Init and assign CommandList
             CommandList = new ObservableCollection<Command>();
             LB_Commands.ItemsSource = CommandList;
+
+            // Init default paths
             pathFullDefault = pathDirectory + "\\" + filenameDefault;
             pathFullCustom = pathDirectory + "\\" + filenameCustom;
+
+            // Create directory for saving
             Directory.CreateDirectory(pathDirectory);
+
+            // Try to load autosaved xml file
             try
             {
                 LoadXML(pathFullDefault);
@@ -57,21 +63,57 @@ namespace CommandManager
             {
                 // Permission Denied
             }
+
+            // Init show hints variable
             ShowHints = false;
+
+            // Init Gradient Stops for Animation, when a command is executed
+            stop0 = new GradientStop(Colors.Transparent, 0.0);
+            stop1 = new GradientStop(Colors.Transparent, 0.003);
+            stop2 = new GradientStop(Colors.Transparent, 0.997);
+            stop3 = new GradientStop(Colors.Transparent, 1.0);
+            RegisterName("GradientStop1", stop1);
+            RegisterName("GradientStop2", stop2);
+
+            Color_ExecAnimation = (Color)FindResource("listbox-border");
         }
 
-        // Variables and Attributes
+        #endregion Constructors
 
+        #region Variables and Attributes
+
+        // Observable Collection holding the displayed commands
         public ObservableCollection<Command> CommandList = new ObservableCollection<Command>();
+
+        // XmlSerializer
         private XmlSerializer xmlS = new XmlSerializer(typeof(ObservableCollection<Command>));
+
+        // Capacity for Undo Redo Manager
+        public readonly static int StackCapacity = 20;
+
+        // Undo Redo Manager
+        public UndoRedoManager UndoRedoMgr { get; set; }
+
+        // Paths and filenames
         private string filenameDefault = "Autosave.xml";
         private string filenameCustom = "Commands.xml";
         private string pathDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\Command Manager";
         private string pathFullDefault;
         private string pathFullCustom;
-        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Button timestamp for double click checking
         private int btnLastDoubleClickTimestamp = 0;
 
+        // Gradient stops for execution animation
+        private GradientStop stop0;
+        private GradientStop stop1;
+        private GradientStop stop2;
+        private GradientStop stop3;
+
+        // Event Handler for Properties
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // Property for showing hints
         private bool _showHints;
         public bool ShowHints
         {
@@ -91,6 +133,7 @@ namespace CommandManager
             }
         }
 
+        // Property for hint visibility
         private Visibility _hintVisibility;
         public Visibility HintVisibility
         {
@@ -102,7 +145,12 @@ namespace CommandManager
             }
         }
 
-        // Methodes
+        // Property for Execution Animation Color
+        public Color Color_ExecAnimation { get; set; }
+
+        #endregion Variables and Attributes
+
+        #region Methodes
 
         public void LoadXML(string path)
         {
@@ -142,6 +190,17 @@ namespace CommandManager
             process.Start();
         }
 
+        private void InitSocialMedia()
+        {
+            string linkTwitter = "https://twitter.com/Rhatalin";
+            Btn_Twitter.Tag = linkTwitter;
+            Btn_Twitter.ToolTip = linkTwitter;
+
+            string linkGithub = "https://github.com/Rhatalin";
+            Btn_Github.Tag = linkGithub;
+            Btn_Github.ToolTip = linkGithub;
+        }
+
         public Command GetCommandById(int id)
         {
             foreach (Command c in CommandList)
@@ -166,14 +225,21 @@ namespace CommandManager
             {
                 CommandList.Add(dlg.Command);
                 LB_Commands.SelectedItem = dlg.Command;
+                UndoRedoMgr.PushUndo(new CommandChange(CommandAction.Create, Command.CreateCopy(dlg.Command), CommandList.IndexOf(dlg.Command)));
 
             }
         }
 
         public void ShowCommandDialog_Edit(Command cmd)
         {
+            // save values to detect changes
+            Command oldCommand = Command.CreateCopy(cmd);
             DialogCommand dlg = new DialogCommand("Edit", cmd, this);
             dlg.ShowDialog();
+            if (!dlg.Command.Equals(oldCommand)) // command was changed in dialog
+            {
+                UndoRedoMgr.PushUndo(new CommandChange(CommandAction.Update, Command.CreateCopy(oldCommand), CommandList.IndexOf(cmd)));
+            }
         }
 
         public void ShowCommandDialog_Remove(Command c)
@@ -186,6 +252,7 @@ namespace CommandManager
             dlg.Width = 350;
             if (dlg.ShowDialog() == true)
             {
+                UndoRedoMgr.PushUndo(new CommandChange(CommandAction.Delete, Command.CreateCopy(c), CommandList.IndexOf(c)));
                 CommandList.Remove(c);
             }
         }
@@ -199,18 +266,135 @@ namespace CommandManager
             dlg.ShowDialog();
         }
 
-        private void InitSocialMedia()
+        public bool Command_MoveUp(Command c)
         {
-            string linkTwitter = "https://twitter.com/Rhatalin";
-            Btn_Twitter.Tag = linkTwitter;
-            Btn_Twitter.ToolTip = linkTwitter;
-
-            string linkGithub = "https://github.com/Rhatalin";
-            Btn_Github.Tag = linkGithub;
-            Btn_Github.ToolTip = linkGithub;
+            bool couldMove;
+            int indexOld = CommandList.IndexOf(c);
+            int indexNew = indexOld - 1;
+            if (indexOld > 0)
+            {
+                Command swap = CommandList[indexNew];
+                CommandList[indexNew] = c;
+                CommandList[indexOld] = swap;
+                LB_Commands.SelectedIndex = indexNew; //visual improvemend
+                couldMove = true;
+            }
+            else
+            {
+                LB_Commands.SelectedIndex = indexOld; //visual improvemend
+                couldMove = false;
+            }
+            return couldMove;
         }
 
-        // Events
+        public bool Command_MoveDown(Command c)
+        {
+            bool couldMove;
+            int indexOld = CommandList.IndexOf(c);
+            int indexNew = indexOld + 1;
+            if (indexOld < CommandList.Count - 1)
+            {
+                Command swap = CommandList[indexNew];
+                CommandList[indexNew] = c;
+                CommandList[indexOld] = swap;
+                LB_Commands.SelectedIndex = indexNew; //visual improvemend
+                couldMove = true;
+            }
+            else
+            {
+                LB_Commands.SelectedIndex = indexOld; //visual improvemend
+                couldMove = false;
+            }
+            return couldMove;
+        }
+
+        public void Animate_Execution(Button senderBtn, Color color)
+        {
+            // Select the top Listbox entry which is a grid
+            Grid selectedControl = (Grid)((GroupBox)((DockPanel)((DockPanel)senderBtn.Parent).Parent).Parent).Parent;
+
+            //ListBoxItem selectedLBItem = (ListBoxItem)LB_Commands.ItemContainerGenerator.ContainerFromItem(LB_Commands.SelectedItem);
+
+            // Create a LinearGradientBrush for the grid
+            LinearGradientBrush brush = new LinearGradientBrush();
+            brush.StartPoint = new Point(0, 0.5);
+            brush.EndPoint = new Point(1, 0.5);
+
+            // Add predefined gradient stops
+            brush.GradientStops.Add(stop0);
+            brush.GradientStops.Add(stop1);
+            brush.GradientStops.Add(stop2);
+            brush.GradientStops.Add(stop3);
+
+            // Apply the brush to the grid.
+            selectedControl.Background = brush;
+
+            // first animation part
+            ColorAnimation animation1 = new ColorAnimation();
+            animation1.From = Colors.Transparent;
+            animation1.To = color;
+            animation1.Duration = TimeSpan.FromSeconds(0.2);
+            animation1.AutoReverse = false;
+            Storyboard.SetTargetName(animation1, "GradientStop1");
+            Storyboard.SetTargetProperty(animation1,
+                new PropertyPath(GradientStop.ColorProperty));
+
+            // second animation part 
+            ColorAnimation animation2 = new ColorAnimation();
+            animation2.From = Colors.Transparent;
+            animation2.To = color;
+            animation2.Duration = TimeSpan.FromSeconds(0.2);
+            animation2.AutoReverse = false;
+            Storyboard.SetTargetName(animation2, "GradientStop2");
+            Storyboard.SetTargetProperty(animation2,
+                new PropertyPath(GradientStop.ColorProperty));
+
+            // third animation part 
+            ColorAnimation animation3 = new ColorAnimation();
+            animation3.From = color;
+            animation3.To = Colors.Transparent;
+            animation3.Duration = TimeSpan.FromSeconds(0.2);
+            animation3.AutoReverse = false;
+            Storyboard.SetTargetName(animation3, "GradientStop1");
+            Storyboard.SetTargetProperty(animation3,
+                new PropertyPath(GradientStop.ColorProperty));
+
+            // fourth animation part 
+            ColorAnimation animation4 = new ColorAnimation();
+            animation4.From = color;
+            animation4.To = Colors.Transparent;
+            animation4.Duration = TimeSpan.FromSeconds(0.2);
+            animation4.AutoReverse = false;
+            Storyboard.SetTargetName(animation4, "GradientStop2");
+            Storyboard.SetTargetProperty(animation4,
+                new PropertyPath(GradientStop.ColorProperty));
+
+            // Set the animation to begin after the first animation
+            // ends.
+
+            double x = 0.0;
+            animation1.BeginTime = TimeSpan.FromSeconds(x + 0);
+            animation2.BeginTime = TimeSpan.FromSeconds(x + 0.2);
+            animation3.BeginTime = TimeSpan.FromSeconds(x + 0.3);
+            animation4.BeginTime = TimeSpan.FromSeconds(x + 0.4);
+
+
+            // Create a Storyboard to apply the animations.
+            Storyboard storyboard = new Storyboard();
+            storyboard.Children.Add(animation1);
+            storyboard.Children.Add(animation2);
+            storyboard.Children.Add(animation3);
+            storyboard.Children.Add(animation4);
+
+            // Reset brush after animation is complete
+            storyboard.Completed += delegate { selectedControl.Background = Brushes.Transparent; };
+
+            storyboard.Begin(this);            
+        }
+
+        #endregion Methodes
+
+        #region Events
 
         private void Btn_AddCmd_Click(object sender, RoutedEventArgs e)
         {
@@ -290,19 +474,21 @@ namespace CommandManager
         {
             Command c = GetCommandByButton((Button)sender);
             ShowCommandDialog_Edit(c);
-
         }
 
         private void Btn_Remove_Click(object sender, RoutedEventArgs e)
         {
             Command c = GetCommandByButton((Button)sender);
+            UndoRedoMgr.PushUndo(new CommandChange(CommandAction.Delete, Command.CreateCopy(c), CommandList.IndexOf(c)));
             CommandList.Remove(c);
         }
 
         private void Btn_Execute_Click(object sender, RoutedEventArgs e)
         {
-            Command c = GetCommandByButton((Button)sender);
-            ExecuteScript(c);
+            Button btn = (Button)sender;
+            Command c = GetCommandByButton(btn);
+            Animate_Execution(btn, Color_ExecAnimation);
+            //ExecuteScript(c);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -322,38 +508,16 @@ namespace CommandManager
         {
             int id = (int)((Button)sender).Tag;
             Command c = GetCommandById(id);
-            int indexOld = CommandList.IndexOf(c);
-            int indexNew = indexOld - 1;
-            if (indexOld > 0)
-            {
-                Command swap = CommandList[indexNew];
-                CommandList[indexNew] = c;
-                CommandList[indexOld] = swap;
-                LB_Commands.SelectedIndex = indexNew; //visual improvemend
-            }
-            else
-            {
-                LB_Commands.SelectedIndex = indexOld; //visual improvemend
-            }
+            Command_MoveUp(c);
+            UndoRedoMgr.PushUndo(new CommandChange(CommandAction.MoveUp, c, CommandList.IndexOf(c)));
         }
 
         private void Btn_Down_Click(object sender, RoutedEventArgs e)
         {
             int id = (int)((Button)sender).Tag;
             Command c = GetCommandById(id);
-            int indexOld = CommandList.IndexOf(c);
-            int indNew = indexOld + 1;
-            if (indexOld < CommandList.Count - 1)
-            {
-                Command swap = CommandList[indNew];
-                CommandList[indNew] = c;
-                CommandList[indexOld] = swap;
-                LB_Commands.SelectedIndex = indNew; //visual improvemend
-            }
-            else
-            {
-                LB_Commands.SelectedIndex = indexOld; //visual improvemend
-            }
+            Command_MoveDown(c);
+            UndoRedoMgr.PushUndo(new CommandChange(CommandAction.MoveDown, c, CommandList.IndexOf(c)));
         }
 
         private void G_Wrapping_PreviwMouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -371,13 +535,26 @@ namespace CommandManager
         private void Btn_OutputState_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
-            Command cmd = GetCommandById((int)btn.Tag);
-            cmd.ShowOutput = !cmd.ShowOutput;
+            Command c = GetCommandById((int)btn.Tag);
+            UndoRedoMgr.PushUndo(new CommandChange(CommandAction.ChangeOutputState, c, CommandList.IndexOf(c)));
+            c.ShowOutput = !c.ShowOutput;
         }
 
         private void Button_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             btnLastDoubleClickTimestamp = e.Timestamp; // save double click timestamp
         }
+
+        private void MI_Undo_Click(object sender, RoutedEventArgs e)
+        {
+            UndoRedoMgr.UndoCommand();
+        }
+
+        private void MI_Redo_Click(object sender, RoutedEventArgs e)
+        {
+            UndoRedoMgr.RedoCommand();
+        }
+
+        #endregion Events
     }
 }
