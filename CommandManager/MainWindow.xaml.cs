@@ -389,7 +389,7 @@ namespace CommandManager
             // Reset brush after animation is complete
             storyboard.Completed += delegate { selectedControl.Background = Brushes.Transparent; };
 
-            storyboard.Begin(this);            
+            storyboard.Begin(this);
         }
 
         #endregion Methodes
@@ -553,6 +553,14 @@ namespace CommandManager
         private void MI_Redo_Click(object sender, RoutedEventArgs e)
         {
             UndoRedoMgr.RedoCommand();
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged)
+            {
+
+            }
         }
 
         #endregion Events

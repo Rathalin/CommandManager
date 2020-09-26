@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CommandManager"
         xmlns:local_data="clr-namespace:CommandManager.Data"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen" 
-        Closing="Window_Closing"
+        Closing="Window_Closing" SizeChanged="Window_SizeChanged"
         Title="Command Manager" Height="600" Width="800" MinHeight="350" MinWidth="450">
     <DockPanel>
         <Border DockPanel.Dock="Top" Background="{StaticResource bootstrap-violet}">

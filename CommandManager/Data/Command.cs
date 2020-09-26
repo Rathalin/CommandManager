@@ -22,14 +22,6 @@ namespace CommandManager.Data
             _showOutput = showOutput;
         }
 
-        /*
-        public Command(int id, string name, string description, string script, bool showOutput)
-            :this(name, description, script, showOutput)
-        {
-            ID = id;
-        }
-        */
-
         // Attributes
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -77,23 +69,37 @@ namespace CommandManager.Data
         }
 
         [XmlIgnore]
+        private int _maxPreviewColumns = 80;
+        [XmlIgnore]
+        private int _maxPreviewRows = 3;
+        [XmlIgnore]
         public string ScriptPreview
         {
             get
             {
                 string preview = "";
-                var lines = _script.Split(new char[] { '\n' });
-                if (lines.Length > 3)
+                string[] lines = _script.Split(new char[] { '\n' });
+                string[] shortedLines = new string[lines.Length];
+                // reduce line columns
+                for (int i = 0; i < lines.Length; i++)
                 {
-                    for (int i = 0; i < 3; i++)
+                    string line = lines[i];
+                    if (line.Length > _maxPreviewColumns)
                     {
-                        preview += lines[i] + "\n";
+                        shortedLines[i] = line.Substring(0, _maxPreviewColumns) + "...";
+                    } else
+                    {
+                        shortedLines[i] = line;
                     }
-                    preview += "...";
                 }
-                else
+                // reduce lines
+                for (int i = 0; i < shortedLines.Length && i < _maxPreviewRows; i++)
                 {
-                    preview = _script;
+                    preview += shortedLines[i] + "\n";
+                }
+                if (shortedLines.Length > _maxPreviewRows)
+                {
+                    preview += "...";
                 }
                 return preview;
             }
@@ -115,7 +121,7 @@ namespace CommandManager.Data
         private static int id = 0;
 
         // Methodes
-        
+
         public override string ToString()
         {
             return string.Format("CommandBlock : {{\n\tName : \"{0}\"\n\tDescription : \"{1}\"\n\tCommand : \"{2}\"\n}}", _name, _desc, _script);
