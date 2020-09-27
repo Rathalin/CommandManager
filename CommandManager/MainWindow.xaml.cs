@@ -392,6 +392,12 @@ namespace CommandManager
             storyboard.Begin(this);
         }
 
+        private void ResizeCommandPreview()
+        {
+            double resizeFactor = 1.3;
+            Command.MaxPreviewColumns = (int)Math.Round(ActualWidth * resizeFactor / 10);
+        }
+
         #endregion Methodes
 
         #region Events
@@ -488,7 +494,7 @@ namespace CommandManager
             Button btn = (Button)sender;
             Command c = GetCommandByButton(btn);
             Animate_Execution(btn, Color_ExecAnimation);
-            //ExecuteScript(c);
+            ExecuteScript(c);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -559,8 +565,13 @@ namespace CommandManager
         {
             if (e.WidthChanged)
             {
-
+                ResizeCommandPreview();
             }
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            ResizeCommandPreview();
         }
 
         #endregion Events

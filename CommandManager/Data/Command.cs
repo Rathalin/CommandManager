@@ -12,7 +12,10 @@ namespace CommandManager.Data
     {
         // Constructors 
 
-        public Command() { }
+        public Command()
+        {
+            Command._commands.Add(this);
+        }
 
         public Command(string name, string description, string script, bool showOutput)
         {
@@ -20,7 +23,46 @@ namespace CommandManager.Data
             _desc = description;
             _script = script;
             _showOutput = showOutput;
+            Command._commands.Add(this);
         }
+
+        // Static Attributes
+
+        [XmlIgnore]
+        private static List<Command> _commands = new List<Command>();
+
+        [XmlIgnore]
+        private static int _maxPreviewColumns = 120;
+        [XmlIgnore]
+        public static int MaxPreviewColumns
+        {
+            get { return _maxPreviewColumns; }
+            set
+            {
+                _maxPreviewColumns = value;
+                foreach (Command c in _commands)
+                {
+                    c.PropertyChanged?.Invoke(c, new PropertyChangedEventArgs("ScriptPreview"));
+                }                
+            }
+        }
+
+        [XmlIgnore]
+        private static int _maxPreviewRows = 3;
+        [XmlIgnore]
+        public static int MaxPreviewRows
+        {
+            get { return _maxPreviewRows; }
+            set
+            {
+                _maxPreviewRows = value;
+                foreach (Command c in _commands)
+                {
+                    c.PropertyChanged?.Invoke(c, new PropertyChangedEventArgs("ScriptPreview"));
+                }
+            }
+        }
+
 
         // Attributes
 
@@ -69,10 +111,6 @@ namespace CommandManager.Data
         }
 
         [XmlIgnore]
-        private int _maxPreviewColumns = 80;
-        [XmlIgnore]
-        private int _maxPreviewRows = 3;
-        [XmlIgnore]
         public string ScriptPreview
         {
             get
@@ -84,20 +122,20 @@ namespace CommandManager.Data
                 for (int i = 0; i < lines.Length; i++)
                 {
                     string line = lines[i];
-                    if (line.Length > _maxPreviewColumns)
+                    if (line.Length > MaxPreviewColumns)
                     {
-                        shortedLines[i] = line.Substring(0, _maxPreviewColumns) + "...";
+                        shortedLines[i] = line.Substring(0, MaxPreviewColumns) + "...";
                     } else
                     {
                         shortedLines[i] = line;
                     }
                 }
                 // reduce lines
-                for (int i = 0; i < shortedLines.Length && i < _maxPreviewRows; i++)
+                for (int i = 0; i < shortedLines.Length && i < MaxPreviewRows; i++)
                 {
                     preview += shortedLines[i] + "\n";
                 }
-                if (shortedLines.Length > _maxPreviewRows)
+                if (shortedLines.Length > MaxPreviewRows)
                 {
                     preview += "...";
                 }
