@@ -12,7 +12,10 @@ namespace CommandManager.Data
     {
         // Constructors 
 
-        public Command() { }
+        public Command()
+        {
+            Command._commands.Add(this);
+        }
 
         public Command(string name, string description, string script, bool showOutput)
         {
@@ -20,15 +23,46 @@ namespace CommandManager.Data
             _desc = description;
             _script = script;
             _showOutput = showOutput;
+            Command._commands.Add(this);
         }
 
-        /*
-        public Command(int id, string name, string description, string script, bool showOutput)
-            :this(name, description, script, showOutput)
+        // Static Attributes
+
+        [XmlIgnore]
+        private static List<Command> _commands = new List<Command>();
+
+        [XmlIgnore]
+        private static int _maxPreviewColumns = 120;
+        [XmlIgnore]
+        public static int MaxPreviewColumns
         {
-            ID = id;
+            get { return _maxPreviewColumns; }
+            set
+            {
+                _maxPreviewColumns = value;
+                foreach (Command c in _commands)
+                {
+                    c.PropertyChanged?.Invoke(c, new PropertyChangedEventArgs("ScriptPreview"));
+                }                
+            }
         }
-        */
+
+        [XmlIgnore]
+        private static int _maxPreviewRows = 3;
+        [XmlIgnore]
+        public static int MaxPreviewRows
+        {
+            get { return _maxPreviewRows; }
+            set
+            {
+                _maxPreviewRows = value;
+                foreach (Command c in _commands)
+                {
+                    c.PropertyChanged?.Invoke(c, new PropertyChangedEventArgs("ScriptPreview"));
+                }
+            }
+        }
+
 
         // Attributes
 
@@ -82,18 +116,28 @@ namespace CommandManager.Data
             get
             {
                 string preview = "";
-                var lines = _script.Split(new char[] { '\n' });
-                if (lines.Length > 3)
+                string[] lines = _script.Split(new char[] { '\n' });
+                string[] shortedLines = new string[lines.Length];
+                // reduce line columns
+                for (int i = 0; i < lines.Length; i++)
                 {
-                    for (int i = 0; i < 3; i++)
+                    string line = lines[i];
+                    if (line.Length > MaxPreviewColumns)
                     {
-                        preview += lines[i] + "\n";
+                        shortedLines[i] = line.Substring(0, MaxPreviewColumns) + "...";
+                    } else
+                    {
+                        shortedLines[i] = line;
                     }
-                    preview += "...";
                 }
-                else
+                // reduce lines
+                for (int i = 0; i < shortedLines.Length && i < MaxPreviewRows; i++)
                 {
-                    preview = _script;
+                    preview += shortedLines[i] + "\n";
+                }
+                if (shortedLines.Length > MaxPreviewRows)
+                {
+                    preview += "...";
                 }
                 return preview;
             }
@@ -115,7 +159,7 @@ namespace CommandManager.Data
         private static int id = 0;
 
         // Methodes
-        
+
         public override string ToString()
         {
             return string.Format("CommandBlock : {{\n\tName : \"{0}\"\n\tDescription : \"{1}\"\n\tCommand : \"{2}\"\n}}", _name, _desc, _script);

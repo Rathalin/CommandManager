@@ -388,7 +388,13 @@ namespace CommandManager
             // Reset brush after animation is complete
             storyboard.Completed += delegate { selectedControl.Background = Brushes.Transparent; };
 
-            storyboard.Begin(this);            
+            storyboard.Begin(this);
+        }
+
+        private void ResizeCommandPreview()
+        {
+            double resizeFactor = 1.3;
+            Command.MaxPreviewColumns = (int)Math.Round(ActualWidth * resizeFactor / 10);
         }
 
         #endregion Methodes
@@ -487,7 +493,7 @@ namespace CommandManager
             Button btn = (Button)sender;
             Command c = GetCommandByButton(btn);
             Animate_Execution(btn, Color_ExecAnimation);
-            //ExecuteScript(c);
+            ExecuteScript(c);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -552,6 +558,19 @@ namespace CommandManager
         private void MI_Redo_Click(object sender, RoutedEventArgs e)
         {
             UndoRedoMgr.RedoCommand();
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.WidthChanged)
+            {
+                ResizeCommandPreview();
+            }
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            ResizeCommandPreview();
         }
 
         #endregion Events
