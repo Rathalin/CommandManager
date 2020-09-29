@@ -13,7 +13,7 @@ Simply download the Setup file [here](https://github.com/Rhatalin/CommandManager
 
 This is how the Command Manager looks for now:
 
-![demo](https://github.com/Rhatalin/CommandManager/blob/master/CommandManager/Images/CommandManager_v1_0_1.PNG)
+![demo](https://github.com/Rhatalin/CommandManager/blob/master/CommandManager/Images/CommandManager_v1_1.PNG)
 
 ## Contact :card_index:
 
