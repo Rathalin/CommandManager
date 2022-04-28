@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -174,29 +176,33 @@ namespace CommandManager
 
         public void ExecuteScript(string script, bool showOutput)
         {
-            script = script.Replace((char)10, '&'); // replace LF with &
-            Process process = new Process();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            string startArg = "/C";
-            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            if (showOutput)
+            try
             {
-                startArg = "/K";
-                startInfo.WindowStyle = ProcessWindowStyle.Normal;
+                string fileName = "Command.bat";
+                string filePath = Path.Combine(pathDirectory, fileName);
+                File.WriteAllText(filePath, script);
+                Process proc = new Process();
+                proc.StartInfo.WorkingDirectory = pathDirectory;
+                proc.StartInfo.FileName = "cmd.exe";
+                proc.StartInfo.CreateNoWindow = !showOutput;
+                proc.StartInfo.WindowStyle = showOutput ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden;
+                proc.StartInfo.Arguments = "/k " + fileName;
+                proc.Start();
             }
-            startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = startArg + script;
-            process.StartInfo = startInfo;
-            process.Start();
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
         }
 
         private void InitSocialMedia()
         {
-            string linkTwitter = "https://twitter.com/Rhatalin";
+            string linkTwitter = "https://twitter.com/Rathalin";
             Btn_Twitter.Tag = linkTwitter;
             Btn_Twitter.ToolTip = linkTwitter;
 
-            string linkGithub = "https://github.com/Rhatalin";
+            string linkGithub = "https://github.com/Rathalin";
             Btn_Github.Tag = linkGithub;
             Btn_Github.ToolTip = linkGithub;
         }

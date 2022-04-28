@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.202
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandManager", "CommandManager\CommandManager.csproj", "{7BF3773C-39E9-4695-8F72-9A048FCAE647}"
-EndProject
-Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "CM_Installer", "CM_Installer\CM_Installer.wixproj", "{3CE32CFD-A3FE-42A8-9265-82C9EB5EE2ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,16 +27,6 @@ Global
 		{7BF3773C-39E9-4695-8F72-9A048FCAE647}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7BF3773C-39E9-4695-8F72-9A048FCAE647}.Release|x86.ActiveCfg = Release|Any CPU
 		{7BF3773C-39E9-4695-8F72-9A048FCAE647}.Release|x86.Build.0 = Release|Any CPU
-		{3CE32CFD-A3FE-42A8-9265-82C9EB5EE2ED}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{3CE32CFD-A3FE-42A8-9265-82C9EB5EE2ED}.Debug|x86.ActiveCfg = Debug|x86
-		{3CE32CFD-A3FE-42A8-9265-82C9EB5EE2ED}.Debug|x86.Build.0 = Debug|x86
-		{3CE32CFD-A3FE-42A8-9265-82C9EB5EE2ED}.PersonalUsage|Any CPU.ActiveCfg = Release|x86
-		{3CE32CFD-A3FE-42A8-9265-82C9EB5EE2ED}.PersonalUsage|Any CPU.Build.0 = Release|x86
-		{3CE32CFD-A3FE-42A8-9265-82C9EB5EE2ED}.PersonalUsage|x86.ActiveCfg = Release|x86
-		{3CE32CFD-A3FE-42A8-9265-82C9EB5EE2ED}.PersonalUsage|x86.Build.0 = Release|x86
-		{3CE32CFD-A3FE-42A8-9265-82C9EB5EE2ED}.Release|Any CPU.ActiveCfg = Release|x86
-		{3CE32CFD-A3FE-42A8-9265-82C9EB5EE2ED}.Release|x86.ActiveCfg = Release|x86
-		{3CE32CFD-A3FE-42A8-9265-82C9EB5EE2ED}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
