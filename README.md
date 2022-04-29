@@ -7,7 +7,7 @@ This application provides more organisation with visual appeal.
 
 ## Usage :wrench:
 
-Simply download the Setup file [here](https://github.com/Rhatalin/CommandManager/releases) and open it.
+Simply download the [executable](https://github.com/Rhatalin/CommandManager/releases). No installation needed.
 
 ## Demo :desktop_computer:
 
@@ -17,4 +17,4 @@ This is how the Command Manager looks for now:
 
 ## Contact :card_index:
 
-If you have any questions or comments let me know on github or on [twitter](https://twitter.com/Rhatalin)!
+If you have any questions or comments let me know on github or on [twitter](https://twitter.com/Rathalin)!
